@@ -34,10 +34,6 @@ MainView::MainView(QWidget *parent) :
     card->setMaximumSize(QSize(128,192));
     card->setText("");
     card->setStyleSheet("border-image:url(:/media/Media/cardback.png)");
-    //card->setStyleSheet("border-image:url(qrc:/media/Media/cardback.png)");
-    //card->setStyleSheet("QWidget{background-image:url(:/media/Media/cardback.png)}");
-    //card->setStyleSheet("background-image:url(qrc:/media/Media/cardback.png)");
-    //card->setStyleSheet("background-image:url(:/media/Media/cardback.png)");
 
     hlcard->addWidget(card);
 
