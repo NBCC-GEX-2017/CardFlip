@@ -23,7 +23,7 @@ MainView::MainView(QWidget *parent) :
     auto hlShuffle = new QHBoxLayout();
     vlMain->addLayout(hlShuffle);
 
-    ui->centralWidget->setStyleSheet(QStringLiteral("background-color:rgb(23,101,17"));
+    ui->centralWidget->setStyleSheet("background-color:green;");
 
     // set up cardButton
     QFont font;
@@ -34,12 +34,13 @@ MainView::MainView(QWidget *parent) :
     card->setMaximumSize(QSize(128,192));
     card->setText("");
     card->setStyleSheet("border-image:url(:/media/Media/cardback.png)");
+    hlCard->addWidget(card);
 
     // set up shuffle button
     auto shuffleButton = new QPushButton();
     shuffleButton->setText("Shuffle");
-    shuffleButton->setMinimumSize(QSize(128,192));
-    shuffleButton->setMaximumSize(QSize(128,192));
+    shuffleButton->setMinimumSize(QSize(128,20));
+    shuffleButton->setMaximumSize(QSize(128,20));
     shuffleButton->setStyleSheet(QStringLiteral("border-color:lightsteelblue"));
     hlShuffle->addWidget(shuffleButton);
 
