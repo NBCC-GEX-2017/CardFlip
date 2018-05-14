@@ -2,7 +2,8 @@
 QT flip a card demonstration
 
  
- 
+##Layouts 
+[Spacing, Stretching, and Struts ](./spacing.md)
  
 ## Creating a Fork
 
