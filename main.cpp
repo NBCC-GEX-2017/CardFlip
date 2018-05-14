@@ -1,4 +1,4 @@
-#include "mainview.h"
+#include "Controller/mainview.h"
 #include <QApplication>
 
 int main(int argc, char *argv[])
