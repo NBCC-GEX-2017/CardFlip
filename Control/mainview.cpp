@@ -3,6 +3,7 @@
 #include <QPushButton>
 #include <QVBoxLayout>
 #include <QHBoxLayout>
+#include <QGridLayout>
 #include <QString>
 #include <QFont>
 
@@ -17,18 +18,36 @@ MainView::MainView(QWidget *parent) :
     deck->shuffle();
 
     // add gridlayout **
-
+    auto* grid = new QGridLayout(ui->centralWidget);
 
     // set up layouts
+    for(int i=0;i<24;i++)
+    {
+        QPushButton cardDisplayBtns* = new QPushButton(i);
+        cardDisplayBtns(i)->setFont(font);
+        cardDisplayBtns(i)->setMinimumSize(QSize(128,192));
+        cardDisplayBtns(i)->setMaximumSize(QSize(128,192));
+        cardDisplayBtns(i)->setText("");
+        cardDisplayBtns(i)->setStyleSheet("border-image:url(:/new/Media/Media/cardback.png)");
 
-    // central widget -> vlMain -> hlCard
-    auto vlMain = new QVBoxLayout(ui->centralWidget);
+        grid->addWidget(btn,i/6,i%4); //set buttons on a grid
+            connect(cardDisplayBtns,
+                    &QPushButton::clicked, //connect buttons to clicked event
+                    this, //parent
+                    &MainView::onButtonClick); //clicked event calls onButtonClick code
+            buttons.push_back(cardDisplayBtns); //insert buttons in vector
 
-    auto hlMain = new QHBoxLayout();
-    vlMain->addLayout(hlMain);
+    }
 
-    auto hlShuffle = new QHBoxLayout();
-    vlMain->addLayout(hlShuffle);
+
+//    // central widget -> vlMain -> hlCard
+//    auto vlMain = new QVBoxLayout(ui->centralWidget);
+
+//    auto hlMain = new QHBoxLayout();
+//    vlMain->addLayout(hlMain);
+
+//    auto hlShuffle = new QHBoxLayout();
+//    vlMain->addLayout(hlShuffle);
 
 
     //                          -> hlShuffle
@@ -40,13 +59,7 @@ MainView::MainView(QWidget *parent) :
     font.setPixelSize(40);
 
 
-    cardDisplayBtn = new QPushButton;
-    cardDisplayBtn->setFont(font);
-    cardDisplayBtn->setMinimumSize(QSize(128,192));
-    cardDisplayBtn->setMaximumSize(QSize(128,192));
-    cardDisplayBtn->setText("");
-    cardDisplayBtn->setStyleSheet("border-image:url(:/new/Media/Media/cardback.png)");
-    hlMain->addWidget(cardDisplayBtn); // add button to layout
+
     hlMain->addStretch(1);
 
     connect(cardDisplayBtn,

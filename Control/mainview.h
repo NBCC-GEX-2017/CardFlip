@@ -4,6 +4,7 @@
 #include <Model/Card.h>
 #include <Model/Deck.h>
 #include <QMainWindow>
+#include <vector>
 #include <memory>
 
 namespace Ui {
@@ -33,7 +34,7 @@ private:
 
     std::unique_ptr<Deck> deck;
     /////////////////////////
-    QPushButton* cardDisplayBtn;
+    std::vector<QPushButton*> cardDisplayBtns;
  //change to a vector. to deal 32 cards in a grid...refer to demo03 (tic tac toe)
 
 
