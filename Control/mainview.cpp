@@ -47,16 +47,22 @@ MainView::MainView(QWidget *parent) :
     font.setPixelSize(40);
 
 
-    auto* card = new QPushButton;
-    card->setFont(font);
-    card->setMinimumSize(QSize(128,192));
-    card->setMaximumSize(QSize(128,192));
-    card->setText("");
-    card->setStyleSheet("border-image:url(:/new/prefix1/Media/cardback.png)");
+    cardDisplayBtn = new QPushButton;
+    cardDisplayBtn->setFont(font);
+    cardDisplayBtn->setMinimumSize(QSize(128,192));
+    cardDisplayBtn->setMaximumSize(QSize(128,192));
+    cardDisplayBtn->setText("");
+    cardDisplayBtn->setStyleSheet("border-image:url(:/new/prefix1/Media/cardback.png)");
 
 
-    hlCard->addWidget(card);
+    hlCard->addWidget(cardDisplayBtn);
         hlCard->addStretch(1);
+
+    connect(cardDisplayBtn,
+            &QPushButton::clicked,
+            this,
+            &MainView::onCardClick);
+
 
     //set up ShuffleButton
 
@@ -70,7 +76,10 @@ MainView::MainView(QWidget *parent) :
         hlShuffle->addStretch(1);
     hlShuffle->addWidget(shuffle);
 
-
+    connect(shuffle,
+            &QPushButton::clicked,
+            this,
+            [this](){deck->shuffle();drawView();});
 
 
        /* // add some more buttons
@@ -119,6 +128,21 @@ void MainView::drawView()
 {
 
 
+    if(deck->isFlipped())
+    {
+        if(deck->getCardColor()==CardColor::Red)
+            cardDisplayBtn->setStyleSheet("border-image:url(:/new/prefix1/Media/cardfront.png); color:red");
+        else
+            cardDisplayBtn->setStyleSheet("border-image:url(:/new/prefix1/Media/cardfront.png); color:black");
+
+        cardDisplayBtn->setText(QString::fromStdString(deck->topCardToString()));
+
+    }
+    else
+    {
+        cardDisplayBtn->setStyleSheet("border-image:url(:/new/prefix1/Media/cardback.png)");
+        cardDisplayBtn->setText("");
+    }
 
 }
 
