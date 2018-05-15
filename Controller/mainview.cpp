@@ -13,6 +13,10 @@ MainView::MainView(QWidget *parent) :
 {
     ui->setupUi(this);
 
+    deck=std::unique_ptr<Deck>(new Deck());
+
+    deck->shuffle();
+
     //set up the Deck deck; deck.shuffle
 
     //set up layout
@@ -20,9 +24,11 @@ MainView::MainView(QWidget *parent) :
 
     auto hlCard = new QHBoxLayout();
     auto hlShuffle = new QHBoxLayout();
+    auto hl_space_demo = new QHBoxLayout();
 
     vlmain->addLayout(hlCard);
     vlmain->addLayout(hlShuffle);
+    vlmain->addLayout(hl_space_demo);
 
     ui->centralWidget->setStyleSheet(QStringLiteral("background-color:rgb(23,101,17)"));
     // central widget -> vlMain -> hlCard
@@ -39,8 +45,8 @@ MainView::MainView(QWidget *parent) :
     card->setText("");
     card->setStyleSheet("border-image:url(:/media/Media/cardback.png)");
 
-    hlCard->addWidget(card);
 
+    hlCard->addWidget(card);
 
     // set up shuffle button
     auto newShuffleBtn= new QPushButton();
@@ -50,10 +56,36 @@ MainView::MainView(QWidget *parent) :
     newShuffleBtn->setMinimumSize(QSize(128,20));
     newShuffleBtn->setMaximumSize(QSize(128,20));
 
+
+    hlShuffle->addStretch(1);
+
     hlShuffle->addWidget(newShuffleBtn);
 
+    // add some more buttons
 
+    for (int i=0;i<5;++i)
+    {
+        auto btn = new QPushButton();
+        btn->setText("X");
+        btn->setMinimumSize(QSize(20,20));
+        btn->setMaximumSize(QSize(20,20));
+        btn->setStyleSheet(QStringLiteral("background-color:plum"));
+        hl_space_demo->addWidget(btn);
+    }
 
+    hl_space_demo->addStretch(1);
+
+    // add some more buttons
+    for (int i=0;i<5;++i)
+    {
+        auto btn = new QPushButton();
+        btn->setText("X");
+        btn->setMinimumSize(QSize(20,20));
+        btn->setMaximumSize(QSize(20,20));
+        btn->setStyleSheet(QStringLiteral("background-color:plum"));
+        hl_space_demo->addWidget(btn);
+        hl_space_demo->addSpacing(20);
+    }
 
 
 }
@@ -62,3 +94,16 @@ MainView::~MainView()
 {
     delete ui;
 }
+
+void MainView::onCardClick()
+{
+    deck->nextCard();
+    drawView();
+}
+
+void MainView::drawView()
+{
+
+}
+
+
