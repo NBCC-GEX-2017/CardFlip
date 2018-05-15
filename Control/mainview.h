@@ -30,7 +30,7 @@ private:
     Ui::MainView *ui;
 
     std::unique_ptr<Deck> deck;
-    QPushButton* cardDisplayBtn;
+    QPushButton* cardDisplayBtn;//change to vector,deal 32 cards
 
 };
 

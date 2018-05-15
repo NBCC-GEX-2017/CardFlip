@@ -118,7 +118,7 @@ MainView::~MainView()
 
 void MainView::onCardClick()
 {
-    deck->nextCard();
+    deck->nextCard();//for HW://deck->nextCard();
     drawView();
 
 
