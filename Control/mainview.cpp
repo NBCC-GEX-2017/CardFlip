@@ -8,6 +8,7 @@
 #include <QFont>
 
 
+
 MainView::MainView(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainView)
@@ -16,26 +17,30 @@ MainView::MainView(QWidget *parent) :
     ui->centralWidget->setStyleSheet(QStringLiteral("background-color:rgb(39, 163, 101);"));
     this->setWindowTitle("Card Flip Palooza");
 
-
-    // set up model Deck deckl deck.shuffle
+    deck = std::unique_ptr<Deck>(new Deck());
+    deck->shuffle();
 
 
     QFont font;
 
     font.setPixelSize(40);
-
-
-    auto* card = new QPushButton;
-    card->setFont(font);
-    card->setMaximumSize(QSize(128,192));
-    card->setMinimumSize(QSize(128,192));
-    card->setText("");
-    card->setStyleSheet("border-image:url(:/media/Media/cardback.png)");
-
     auto* verticalLayoutMain = new QVBoxLayout(ui->centralWidget);
     auto* gridLayout = new QGridLayout();
     verticalLayoutMain->addLayout(gridLayout);
-    gridLayout->addWidget(card);
+
+    for(int i = 0; i < 32; ++i){
+        cardDisplayBtn = new QPushButton;
+        cardDisplayBtn->setFont(font);
+        cardDisplayBtn->setMaximumSize(QSize(128,192));
+        cardDisplayBtn->setMinimumSize(QSize(128,192));
+        cardDisplayBtn->setText("");
+        cardDisplayBtn->setStyleSheet("border-image:url(:/media/Media/cardback.png)");
+        gridLayout->addWidget(cardDisplayBtn, i%4, i/4);
+        connect(cardDisplayBtn, &QPushButton::clicked, this, &MainView::onCardClick);
+        cardDisplayBtns.push_back(cardDisplayBtn);
+    }
+
+
 
     //set up shuffle button
     auto* shuffButton = new QPushButton;
@@ -46,13 +51,39 @@ MainView::MainView(QWidget *parent) :
 
     shuffButton->setStyleSheet(QStringLiteral("background-color:rgb(249, 252, 251);"));
 
-    auto gridLayoutSpace = new QGridLayout();
-    verticalLayoutMain->addLayout(gridLayoutSpace);
-
+    connect(shuffButton, &QPushButton::clicked, this,
+            [this] () {deck->shuffle(); drawView();}
+            );
 
 }
 
 MainView::~MainView()
 {
     delete ui;
+}
+
+void MainView::onCardClick()
+{
+    deck->nextCard();
+    drawView();
+}
+
+void MainView::drawView()
+{
+    for(int i = 0; i < 32; ++i){
+        if(deck->isFlipped())
+        {
+            if(deck->getCardColor() == CardColor::Red)
+                cardDisplayBtns[i]->setStyleSheet("border-image:url(:/media/Media/cardfront.png); color: red;");
+            else
+                cardDisplayBtns[i]->setStyleSheet("border-image:url(:/media/Media/cardfront.png); color: black;");
+
+            cardDisplayBtns[i]->setText(QString::fromStdString(deck->topCardToString()));
+        }
+        else{
+            cardDisplayBtns[i]->setStyleSheet("border-image:url(:/media/Media/cardback.png)");
+            cardDisplayBtns[i]->setText("");
+        }
+    }
+
 }
