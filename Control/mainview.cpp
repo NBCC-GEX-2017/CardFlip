@@ -13,12 +13,16 @@ MainView::MainView(QWidget *parent) :
 {
     ui->setupUi(this);
 
-    //set up model: Deck deck; deck.shuffle
+
+    deck=std::unique_ptr<Deck>(new Deck());
+    deck->shuffle();
+
+    /*//set up model: Deck deck; deck.shuffle
 
 
     //set up layouts
     //central widget->vlMain->hlCard
-    //                      ->hlShuffle
+    //                      ->hlShuffle*/
 
     QVBoxLayout* vlMain=new QVBoxLayout(ui->centralWidget);
     QHBoxLayout* hlCard=new QHBoxLayout();
@@ -26,6 +30,14 @@ MainView::MainView(QWidget *parent) :
 
     QHBoxLayout* hlShuffle=new QHBoxLayout();
     vlMain->addLayout(hlShuffle);
+
+        //vlmain->addSpacing(100);
+
+        auto hl_space_demo = new QHBoxLayout();
+        vlMain->addLayout(hl_space_demo);
+
+
+        vlMain->addStretch(1);
 
     ui->centralWidget->setStyleSheet(QStringLiteral("background-color:rgb(23,101,17)"));
 
@@ -44,7 +56,7 @@ MainView::MainView(QWidget *parent) :
 
 
     hlCard->addWidget(card);
-
+        hlCard->addStretch(1);
 
     //set up ShuffleButton
 
@@ -55,10 +67,61 @@ MainView::MainView(QWidget *parent) :
     shuffle->setStyleSheet(QStringLiteral("background-color:lightsteelblue"));
 
 
+        hlShuffle->addStretch(1);
     hlShuffle->addWidget(shuffle);
+
+
+
+
+       /* // add some more buttons
+            for (int i=0;i<5;++i)
+            {
+                auto btn = new QPushButton();
+                btn->setText("X");
+                btn->setMinimumSize(QSize(20,20));
+                btn->setMaximumSize(QSize(20,20));
+                btn->setStyleSheet(QStringLiteral("background-color:plum"));
+                hl_space_demo->addWidget(btn);
+            }
+
+            hl_space_demo->addStretch(1);
+
+            // add some more buttons
+            for (int i=0;i<5;++i)
+            {
+                auto btn = new QPushButton();
+                btn->setText("X");
+                btn->setMinimumSize(QSize(20,20));
+                btn->setMaximumSize(QSize(20,20));
+                btn->setStyleSheet(QStringLiteral("background-color:plum"));
+                hl_space_demo->addWidget(btn);
+                hl_space_demo->addSpacing(20);
+            }
+
+            //hl_space_demo->addStrut(200);*/
 }
 
 MainView::~MainView()
 {
     delete ui;
 }
+
+
+void MainView::onCardClick()
+{
+    deck->nextCard();
+    drawView();
+
+
+}
+
+void MainView::drawView()
+{
+
+
+
+}
+
+
+
+

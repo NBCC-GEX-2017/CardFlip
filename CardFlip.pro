@@ -25,10 +25,14 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 SOURCES += \
         main.cpp \
-        control\mainview.cpp
+        control\mainview.cpp \
+    Model/Card.cpp \
+    Model/Deck.cpp
 
 HEADERS += \
-        Control\mainview.h
+        Control\mainview.h \
+    Model/Card.h \
+    Model/Deck.h
 
 FORMS += \
         View\mainview.ui
