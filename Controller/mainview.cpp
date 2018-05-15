@@ -28,6 +28,7 @@ MainView::MainView(QWidget *parent) :
     vlmain->addLayout(glCard);
     vlmain->addLayout(hlShuffle);
 
+    //Homework - Grid
     for(int i = 0; i < 32; i++){
         auto cardBtn = new QPushButton();
 
