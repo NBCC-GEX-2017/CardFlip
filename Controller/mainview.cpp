@@ -81,10 +81,10 @@ MainView::MainView(QWidget *parent) :
         btn->setMaximumSize(QSize(20,20));
         btn->setStyleSheet(QStringLiteral("background-color:plum"));
         hl_space_demo->addWidget(btn);
-        hl_space_demo->addSpacing(20);
+        hl_space_demo->addSpacing(40);
     }
 
-    hl_space_demo->addStrut(2000);
+    //hl_space_demo->addStrut(200);
 
 }
 
