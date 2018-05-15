@@ -13,40 +13,57 @@ MainView::MainView(QWidget *parent) :
 {
     ui->setupUi(this);
 
+    //set up the Deck deck; deck.shuffle
     deck=std::unique_ptr<Deck>(new Deck());
 
     deck->shuffle();
 
-    //set up the Deck deck; deck.shuffle
-
     //set up layout
     auto vlmain= new QVBoxLayout(ui->centralWidget);
 
-    auto hlCard = new QHBoxLayout();
+    //auto hlCard = new QHBoxLayout();
+    auto* grid = new QGridLayout();
     auto hlShuffle = new QHBoxLayout();
-    auto hl_space_demo = new QHBoxLayout();
+    //auto hl_space_demo = new QHBoxLayout();
 
-    vlmain->addLayout(hlCard);
+    //vlmain->addLayout(hlCard);
+    vlmain->addLayout(grid);
     vlmain->addLayout(hlShuffle);
-    vlmain->addLayout(hl_space_demo);
+    //vlmain->addLayout(hl_space_demo);
 
     ui->centralWidget->setStyleSheet(QStringLiteral("background-color:rgb(23,101,17)"));
     // central widget -> vlMain -> hlCard
     //                          -> hlShuffle
 
-    // set up cardButton
-    QFont font;
-    font.setPixelSize(40);
-
-    auto* card = new QPushButton;
-    card->setFont(font);
-    card->setMinimumSize(QSize(128,192));
-    card->setMaximumSize(QSize(128,192));
-    card->setText("");
-    card->setStyleSheet("border-image:url(:/media/Media/cardback.png)");
+    //set up grid
 
 
-    hlCard->addWidget(card);
+    // set up cardButtons
+    for(int i=0;i<32;i++){
+
+        QFont font;
+        font.setPixelSize(40);
+
+        cardDisplayBtn = new QPushButton();
+        grid->addWidget(cardDisplayBtn,i/8,i%8);
+
+        cardDisplayBtn->setFont(font);
+        cardDisplayBtn->setMinimumSize(QSize(100,150));
+        cardDisplayBtn->setMaximumSize(QSize(100,150));
+        cardDisplayBtn->setText("");
+        cardDisplayBtn->setStyleSheet("border-image:url(:/media/Media/cardback.png)");
+
+        //connect button
+        connect(cardDisplayBtn,
+                &QPushButton::clicked,
+                this,
+                &MainView::onCardClick);
+
+        cardDisplayBtns.push_back(cardDisplayBtn);
+
+    }
+
+
 
     // set up shuffle button
     auto newShuffleBtn= new QPushButton();
@@ -61,31 +78,37 @@ MainView::MainView(QWidget *parent) :
 
     hlShuffle->addWidget(newShuffleBtn);
 
-    // add some more buttons
+    connect(newShuffleBtn,
+            &QPushButton::clicked,
+            this,
+            [this](){deck->shuffle();
+                    drawView();});
 
-    for (int i=0;i<5;++i)
-    {
-        auto btn = new QPushButton();
-        btn->setText("X");
-        btn->setMinimumSize(QSize(20,20));
-        btn->setMaximumSize(QSize(20,20));
-        btn->setStyleSheet(QStringLiteral("background-color:plum"));
-        hl_space_demo->addWidget(btn);
-    }
+//    // add some more buttons
 
-    hl_space_demo->addStretch(1);
+//    for (int i=0;i<5;++i)
+//    {
+//        auto btn = new QPushButton();
+//        btn->setText("X");
+//        btn->setMinimumSize(QSize(20,20));
+//        btn->setMaximumSize(QSize(20,20));
+//        btn->setStyleSheet(QStringLiteral("background-color:plum"));
+//        hl_space_demo->addWidget(btn);
+//    }
 
-    // add some more buttons
-    for (int i=0;i<5;++i)
-    {
-        auto btn = new QPushButton();
-        btn->setText("X");
-        btn->setMinimumSize(QSize(20,20));
-        btn->setMaximumSize(QSize(20,20));
-        btn->setStyleSheet(QStringLiteral("background-color:plum"));
-        hl_space_demo->addWidget(btn);
-        hl_space_demo->addSpacing(20);
-    }
+//    hl_space_demo->addStretch(1);
+
+//    // add some more buttons
+//    for (int i=0;i<5;++i)
+//    {
+//        auto btn = new QPushButton();
+//        btn->setText("X");
+//        btn->setMinimumSize(QSize(20,20));
+//        btn->setMaximumSize(QSize(20,20));
+//        btn->setStyleSheet(QStringLiteral("background-color:plum"));
+//        hl_space_demo->addWidget(btn);
+//        hl_space_demo->addSpacing(20);
+//    }
 
 
 }
@@ -103,6 +126,29 @@ void MainView::onCardClick()
 
 void MainView::drawView()
 {
+    for(int i=0;i<32;i++){
+
+        if(deck->isFlipped()){
+            if(deck->getCardColor()==CardColor::Red)
+            {
+                cardDisplayBtns[i]->setStyleSheet("border-image:url(:/media/Media/cardfront.png); color: red;");
+
+
+            }
+            else{
+                cardDisplayBtns[i]->setStyleSheet("border-image:url(:/media/Media/cardfront.png); color: black;");
+            }
+            cardDisplayBtns[i]->setText(QString::fromStdString(deck->topCardToString()));
+
+        }
+        else{
+
+            cardDisplayBtns[i]->setStyleSheet("border-image:url(:/media/Media/cardback.png)");
+            cardDisplayBtns[i]->setText("");
+        }
+
+    }
+
 
 }
 

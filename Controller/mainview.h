@@ -29,6 +29,7 @@ private:
     Ui::MainView *ui;
     std::unique_ptr<Deck> deck;
     QPushButton* cardDisplayBtn;
+    std::vector<QPushButton*> cardDisplayBtns;
 
 
 };
