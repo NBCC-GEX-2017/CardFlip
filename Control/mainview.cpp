@@ -46,6 +46,8 @@ MainView::MainView(QWidget *parent) :
 
     shuffButton->setStyleSheet(QStringLiteral("background-color:rgb(249, 252, 251);"));
 
+    auto gridLayoutSpace = new QGridLayout();
+    verticalLayoutMain->addLayout(gridLayoutSpace);
 
 
 }
