@@ -10,6 +10,8 @@ namespace Ui {
 class MainView;
 }
 
+class QPushButton;
+
 class MainView : public QMainWindow
 {
     Q_OBJECT
@@ -28,7 +30,8 @@ private:
 
     std::unique_ptr<Deck> deck;
     QPushButton* cardDisplayBtn;//change to vector deal 32 card and change a layout to grid
-    std::vector<QPushButton>* cardDisplayBtns;
+    std::vector<QPushButton*> cardDisplayBtns;
+    //std::vector<QPushButton>* cardDisplayBtns;
 };
 
 #endif // MAINVIEW_H
