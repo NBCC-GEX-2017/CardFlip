@@ -5,9 +5,10 @@
 #include <QHBoxLayout>
 #include <QString>
 #include <QFont>
-//#include "Model/Deck.h"
-
+#include "Model/Deck.h"
+#include <memory>
 #include <QMainWindow>
+#include <vector>
 
 namespace Ui {
 class MainView;
@@ -23,12 +24,15 @@ public:
 
 private slots:
     void changeCard();
+    void shuffle();
 
 private:
     Ui::MainView *ui;
-   //Deck deck;
-    QPushButton* shuffleButton;
-    QPushButton* card;
+    std::unique_ptr<Deck> _deck;
+    QPushButton* _shuffleButton;
+    //QPushButton* _cardBtn;
+    std::vector<QPushButton*> _cardBtn;
+    //homework -> vector of cards -> grid 4 x 8
     int currentCard{0};
     void drawView();
 };
