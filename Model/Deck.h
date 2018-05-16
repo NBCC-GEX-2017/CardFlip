@@ -22,18 +22,12 @@ public:
     Deck();
     
     bool isEmpty() const;
-    //void nextCard();
-    //CardColor getCardColor();
     CardPtr drawCard();
-    //std::string topCardToString() const;
     void shuffle();
-    //void sort();
-    //bool isFlipped() const {return _isFlipped;}
     
 private:
     std::vector<CardPtr> _deck;
     int _topOfDeck;
-    //bool _isFlipped;
 };
 
 

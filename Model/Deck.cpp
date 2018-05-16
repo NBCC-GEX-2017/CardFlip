@@ -20,17 +20,8 @@ Deck::Deck()
         for (auto s : Card::suits)
             _deck.push_back(std::make_shared<Card>(Card(f,s)));
     
-    //_isFlipped = false;
     _topOfDeck = _deck.size()-1;
 }
-
-//CardColor Deck::getCardColor()
-//{
-//    if (_deck[_topOfDeck]->suit == Suit::DIAMOND || _deck[_topOfDeck]->suit == Suit::HEART)
-//        return CardColor::Red;
-//    else
-//        return CardColor::Black;
-//}
 
 bool Deck::isEmpty() const
 {
@@ -48,26 +39,6 @@ CardPtr Deck::drawCard()
         return _deck[_topOfDeck--];//top of deck is decreaced after it returns the first card
     }
 }
-
-//void Deck::sort()
-//{
-//    std::sort(_deck.begin(), _deck.end(),  [](CardPtr lhs, CardPtr rhs) { return (*lhs < *rhs);});
-//    _isFlipped = false;
-//     _topOfDeck = static_cast<int>(_deck.size()-1);
-//}
-//
-//void Deck::nextCard()
-//{
-//    if (_isFlipped)
-//         _topOfDeck = _topOfDeck ? _topOfDeck - 1 : 0;
-//    else
-//        _isFlipped = true;
-//}
-//
-//std::string Deck::topCardToString() const
-//{
-//    return _deck[_topOfDeck]->toString();
-//}
 
 void Deck::shuffle()
 {
@@ -87,5 +58,4 @@ void Deck::shuffle()
         swap(_deck[i],  _deck[i + (rand() % (_deck.size()-i))]);
     }
     _topOfDeck = _deck.size()-1;
-    //_isFlipped = false;
 }
