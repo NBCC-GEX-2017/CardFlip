@@ -33,7 +33,7 @@ MainView::MainView(QWidget *parent) :
     QFont font;
     font.setPixelSize(40);
 
-    for(int i=0;i<16;i++)
+    for(int i=0;i<32;i++)
     {
         auto* card = new QPushButton();
 
@@ -44,7 +44,7 @@ MainView::MainView(QWidget *parent) :
         card->setText("");
         card->setStyleSheet("border-image:url(:/new/Media/Media/cardback.png)");
 
-        cardsLayout->addWidget(card,i/4,i%4); //set buttons on a grid
+        cardsLayout->addWidget(card,i%4,i/4); //set buttons on a grid
             connect(card,
                     &QPushButton::clicked, //connect buttons to clicked event
                     this, //parent
@@ -63,7 +63,7 @@ MainView::MainView(QWidget *parent) :
 
    auto shuffleButton = new QPushButton();
    shuffleLayout->addWidget(shuffleButton);
-   shuffleButton->setFont(font);
+   //shuffleButton->setFont(font);
    shuffleButton->setText("Shuffle");
    shuffleButton->setMinimumSize(QSize(128,20));
    shuffleButton->setMaximumSize(QSize(128,20));
@@ -93,7 +93,7 @@ void MainView::onCardClick(){
 
 void MainView::drawView(){
 
-    for(int i=0;i<16;i++)
+    for(int i=0;i<32;i++)
     {
         if(deck->isFlipped())
         {
