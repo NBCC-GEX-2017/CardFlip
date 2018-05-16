@@ -78,27 +78,27 @@ MainView::~MainView()
 
 void MainView::onCardClick()
 {
-    deck->nextCard();
+    //deck->nextCard();
     drawView();
 }
 
 void MainView::drawView()
 {
-    for (int i=0;i<buttons.size();i++)
-    {
-        if (deck->isFlipped())
-        {
-            if(deck->getCardColor() == CardColor::Red)
-                buttons[i]->setStyleSheet("border-image:url(:/media/Media/cardfront.png); color:red;");
-            else
-                buttons[i]->setStyleSheet("border-image:url(:/media/Media/cardfront.png); color:black;");
+    //for (int i=0;i<buttons.size();i++)
+    //{
+        //if (deck->isFlipped())
+        //{
+            //if(deck->getCardColor() == CardColor::Red)
+                //buttons[i]->setStyleSheet("border-image:url(:/media/Media/cardfront.png); color:red;");
+            //else
+                //buttons[i]->setStyleSheet("border-image:url(:/media/Media/cardfront.png); color:black;");
 
-            buttons[i]->setText(QString::fromStdString(deck->topCardToString()));
-        }
-        else
-        {
-            buttons[i]->setStyleSheet("border-image:url(:/media/Media/cardback.png)");
-            buttons[i]->setText("");
-        }
-    }
+            //buttons[i]->setText(QString::fromStdString(deck->topCardToString()));
+        //}
+        //else
+        //{
+            //buttons[i]->setStyleSheet("border-image:url(:/media/Media/cardback.png)");
+            //buttons[i]->setText("");
+        //}
+    //}
 }
