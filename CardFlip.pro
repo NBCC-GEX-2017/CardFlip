@@ -27,8 +27,7 @@ SOURCES += \
         main.cpp \
         Control/mainview.cpp \
     Model/Card.cpp \
-    Model/Deck.cpp \
-    View/cardbutton.cpp
+    Model/Deck.cpp
 
 
 HEADERS += \

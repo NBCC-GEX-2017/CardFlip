@@ -8,6 +8,8 @@
 #include <QString>
 #include <QFont>
 
+const int CARD_ROWS = 4;
+const int CARD_COLS = 8;
 
 MainView::MainView(QWidget *parent) :
     QMainWindow(parent),
@@ -31,20 +33,20 @@ MainView::MainView(QWidget *parent) :
 
     ui->centralWidget->setStyleSheet("background-color:green;");
 
-    //QFont font;
-    //font.setPixelSize(40);
+    QFont font;
+    font.setPixelSize(40);
 
     // set up cardButton
-    for (int i=0;i<32;i++)
+    for (int i=0;i<CARD_ROWS * CARD_COLS;++i)
     {
         CardButton* cardButton = new CardButton(i);
-        //cardButton->setFont(font);
-        //cardButton->setMinimumSize(QSize(128,192));
-        //cardButton->setMaximumSize(QSize(128,192));
-        //cardButton->setText("");
-        //cardButton->setStyleSheet("border-image:url(:/media/Media/cardback.png)");
+        cardButton->setFont(font);
+        cardButton->setMinimumSize(QSize(128,192));
+        cardButton->setMaximumSize(QSize(128,192));
+        cardButton->setText("");
+        cardButton->setStyleSheet("border-image:url(:/media/Media/cardback.png)");
 
-        grid->addWidget(cardButton, i/8, i%8);
+        grid->addWidget(cardButton, i/CARD_COLS, i%CARD_COLS);
 
 
         connect(cardButton,
@@ -52,7 +54,7 @@ MainView::MainView(QWidget *parent) :
                 this,
                 &MainView::onCardClick);
 
-        buttons.push_back(cardButton);
+        cardButtons.push_back(cardButton);
     }
     // set up shuffle button
     auto shuffleButton = new QPushButton();
@@ -84,21 +86,21 @@ void MainView::onCardClick()
 
 void MainView::drawView()
 {
-    //for (int i=0;i<buttons.size();i++)
+    //for (int i=0;i<cardButtons.size();i++)
     //{
         //if (deck->isFlipped())
         //{
             //if(deck->getCardColor() == CardColor::Red)
-                //buttons[i]->setStyleSheet("border-image:url(:/media/Media/cardfront.png); color:red;");
+                //cardButtons[i]->setStyleSheet("border-image:url(:/media/Media/cardfront.png); color:red;");
             //else
-                //buttons[i]->setStyleSheet("border-image:url(:/media/Media/cardfront.png); color:black;");
+                //cardButtons[i]->setStyleSheet("border-image:url(:/media/Media/cardfront.png); color:black;");
 
-            //buttons[i]->setText(QString::fromStdString(deck->topCardToString()));
+            //cardButtons[i]->setText(QString::fromStdString(deck->topCardToString()));
         //}
         //else
         //{
-            //buttons[i]->setStyleSheet("border-image:url(:/media/Media/cardback.png)");
-            //buttons[i]->setText("");
+            //cardButtons[i]->setStyleSheet("border-image:url(:/media/Media/cardback.png)");
+            //cardButtons[i]->setText("");
         //}
     //}
 }

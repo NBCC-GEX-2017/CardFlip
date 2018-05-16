@@ -6,9 +6,9 @@
 class CardButton : public QPushButton
 {
 public:
-    CardButton(int idx, QWidget* parent = 0);
+    CardButton(int i) : QPushButton(), index(i) {}
 
-    int getIndex() const;
+    int getIndex() const {return index;}
 
 private:
     int index;

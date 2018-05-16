@@ -11,7 +11,7 @@ namespace Ui {
 class MainView;
 }
 
-class QPushButton;
+class CardButton;
 
 class MainView : public QMainWindow
 {
@@ -29,8 +29,7 @@ private:
     Ui::MainView *ui;
 
     std::unique_ptr<Deck> deck;
-    //QPushButton* cardDisplayBtn;
-    std::vector<QPushButton*> buttons;
+    std::vector<CardButton*> cardButtons;
 
 };
 
