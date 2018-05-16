@@ -19,9 +19,11 @@ MainView::MainView(QWidget *parent) :
     //set up the Deck deck; deck.shuffle
     deck=std::unique_ptr<Deck>(new Deck());
 
+    //deck->shuffle();
+
     game = new Game(ROWS*COLUMNS);
 
-    deck->shuffle();
+
 
     //set up layout
     auto vlmain= new QVBoxLayout(ui->centralWidget);
