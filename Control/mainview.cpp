@@ -8,6 +8,7 @@
 #include <QFont>
 
 
+
 MainView::MainView(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainView)
@@ -17,68 +18,58 @@ MainView::MainView(QWidget *parent) :
     deck = std::unique_ptr<Deck>(new Deck);
     deck->shuffle();
 
+    //vertical layout
+    auto vlmain = new QVBoxLayout(ui->centralWidget);
+
+    //horizontal layout
+    auto cardsLayout = new QGridLayout();
+    vlmain->addLayout(cardsLayout);
+
+    auto shuffleLayout = new QHBoxLayout();
+    vlmain->addLayout(shuffleLayout);
+
     // add gridlayout **
-    auto* grid = new QGridLayout(ui->centralWidget);
+    //QGridLayout* grid = new QGridLayout();
+    QFont font;
+    font.setPixelSize(40);
 
-    // set up layouts
-    for(int i=0;i<24;i++)
+    for(int i=0;i<16;i++)
     {
-        QPushButton cardDisplayBtns* = new QPushButton(i);
-        cardDisplayBtns(i)->setFont(font);
-        cardDisplayBtns(i)->setMinimumSize(QSize(128,192));
-        cardDisplayBtns(i)->setMaximumSize(QSize(128,192));
-        cardDisplayBtns(i)->setText("");
-        cardDisplayBtns(i)->setStyleSheet("border-image:url(:/new/Media/Media/cardback.png)");
+        auto* card = new QPushButton();
 
-        grid->addWidget(btn,i/6,i%4); //set buttons on a grid
-            connect(cardDisplayBtns,
+
+        card->setFont(font);
+        card->setMinimumSize(QSize(128,192));
+        card->setMaximumSize(QSize(128,192));
+        card->setText("");
+        card->setStyleSheet("border-image:url(:/new/Media/Media/cardback.png)");
+
+        cardsLayout->addWidget(card,i/4,i%4); //set buttons on a grid
+            connect(card,
                     &QPushButton::clicked, //connect buttons to clicked event
                     this, //parent
-                    &MainView::onButtonClick); //clicked event calls onButtonClick code
-            buttons.push_back(cardDisplayBtns); //insert buttons in vector
+                    &MainView::onCardClick); //clicked event calls onButtonClick code
 
+            cardDisplayBtns.push_back(card); //insert buttons in vector
+
+            //grid->addWidget(cardDisplayBtns[i]);
     }
-
-
-//    // central widget -> vlMain -> hlCard
-//    auto vlMain = new QVBoxLayout(ui->centralWidget);
-
-//    auto hlMain = new QHBoxLayout();
-//    vlMain->addLayout(hlMain);
-
-//    auto hlShuffle = new QHBoxLayout();
-//    vlMain->addLayout(hlShuffle);
-
 
     //                          -> hlShuffle
 
     ui->centralWidget->setStyleSheet(QStringLiteral("background-color:rgb(23, 101, 17);"));
 
-    // set up cardButton
-    QFont font;
-    font.setPixelSize(40);
-
-
-
-    hlMain->addStretch(1);
-
-    connect(cardDisplayBtn,
-            &QPushButton::clicked,
-            this,
-            &MainView::onCardClick);
-
-    //connect(card, &QPushButton::clicked, this, &MainView::centralWidget);
-
     // set up shuffleButton
 
-    auto* shuffle = new QPushButton;
-    shuffle->setText("Shuffle");
-    shuffle->setMinimumSize(QSize(128,30));
-    shuffle->setMaximumSize(QSize(128,30));
-    shuffle->setStyleSheet(QStringLiteral("background-color:lightsteelblue"));
+   auto shuffleButton = new QPushButton();
+   shuffleLayout->addWidget(shuffleButton);
+   shuffleButton->setFont(font);
+   shuffleButton->setText("Shuffle");
+   shuffleButton->setMinimumSize(QSize(128,20));
+   shuffleButton->setMaximumSize(QSize(128,20));
+   shuffleButton->setStyleSheet(QStringLiteral("background-color:aliceblue"));
 
-    hlShuffle->addWidget(shuffle); // add button to layout
-    connect(shuffle,
+    connect(shuffleButton,
             &QPushButton::clicked,
             this,
             [this](){
@@ -93,32 +84,38 @@ MainView::~MainView()
 }
 
 void MainView::onCardClick(){
-    //deck->nextCard();
+
+    //auto* card = dynamic_cast<GameButton*>(sender());
+    deck->nextCard();
     drawView();
+
 }
 
 void MainView::drawView(){
 
-    if(deck->isFlipped())
+    for(int i=0;i<16;i++)
     {
-        if(deck->getCardColor()== CardColor::Red){
-           cardDisplayBtn->setStyleSheet("border-image:url(:/new/Media/Media/cardfront.png); "
-                                         "color: red;");
-        }
-        else{
-           cardDisplayBtn->setStyleSheet("border-image:url(:/new/Media/Media/cardfront.png); "
-                                         "color: black;");
-        }
+        if(deck->isFlipped())
+        {
+            if(deck->getCardColor()== CardColor::Red){
+               cardDisplayBtns[i]->setStyleSheet("border-image:url(:/new/Media/Media/cardfront.png); "
+                                             "color: red;");
+            }
+            else{
+               cardDisplayBtns[i]->setStyleSheet("border-image:url(:/new/Media/Media/cardfront.png); "
+                                             "color: black;");
+            }
 
-        cardDisplayBtn->setText(QString::fromStdString(deck->topCardToString()));
-        //cardDisplayBtn->setStyleSheet("color: red;");
-    }
-    else
-    {
-        cardDisplayBtn->setStyleSheet("border-image:url(:/new/Media/Media/cardback.png);");
-        cardDisplayBtn->setText("");
-    }
+            cardDisplayBtns[i]->setText(QString::fromStdString(deck->topCardToString()));
 
+        }
+        else
+        {
+            cardDisplayBtns[i]->setStyleSheet("border-image:url(:/new/Media/Media/cardback.png);");
+            cardDisplayBtns[i]->setText("");
+
+        }
+    }
 
 
 }

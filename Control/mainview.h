@@ -6,6 +6,8 @@
 #include <QMainWindow>
 #include <vector>
 #include <memory>
+#include <QPushButton>
+
 
 namespace Ui {
 class MainView;
