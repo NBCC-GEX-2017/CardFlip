@@ -22,14 +22,17 @@ enum class CardColor {Black, Red};
 class Card
 {
 public:
-    Card(Face f, Suit s) : suit(s), face(f) {}
+    Card(Face f, Suit s) : suit(s), face(f), _matched(false), _flipped(false) {}
     std::string toString() const;
     CardColor getColor() const;
     const Suit suit;
     const Face face;
 
-    bool isMatched() const { return _matched; };
-    bool isFlipped() const { return _flipped; };
+    bool isMatched() const { return _matched; }
+    bool isFlipped() const { return _flipped; }
+
+    void flip() { _flipped = _flipped ? false : true;}
+    void setMatched(bool isMatched=true) {_matched = isMatched;}
 
     // class members ///////////////////////////////////
     static const std::set<Suit> suits;
