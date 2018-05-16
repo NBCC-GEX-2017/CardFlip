@@ -23,7 +23,7 @@ MainView::MainView(QWidget *parent) :
     vlmain->addLayout(hlmain2);
     font.setPixelSize(40);
     for(int i = 0; i < 20; i++){
-       auto* cButt = new QPushButton;
+       auto* cButt = new CardQPushButton(i);
        cardDisplayBtn.push_back(cButt);
         cButt->setFont(font);
         cButt->setMinimumSize(QSize(64,96));
@@ -32,7 +32,7 @@ MainView::MainView(QWidget *parent) :
         cButt->setStyleSheet("border-image:url(:/new/media/Media/cardback.png)");
         gridmain->addWidget(cButt, i/5, i%5);
         connect (cButt,
-                     &QPushButton::clicked,
+                     &CardQPushButton::clicked,
                      this,
                      &MainView::onCardClick);
     }

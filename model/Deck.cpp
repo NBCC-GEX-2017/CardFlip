@@ -42,7 +42,7 @@ CardPtr Deck::drawCard(){
 
 void Deck::shuffle()
 {
-    std::for_each(_deck.begin(),_deck.end(),[](auto& e){
+    std::for_each(_deck.begin(),_deck.end(),[](auto e){
         if(e->isFlipped())
             e->flip();
         e->setMatched(false);

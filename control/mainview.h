@@ -5,6 +5,7 @@
 #include "model/Deck.h"
 #include <memory>
 #include <vector>
+#include "view/cardqpushbutton.h"
 
 namespace Ui {
 class MainView;
