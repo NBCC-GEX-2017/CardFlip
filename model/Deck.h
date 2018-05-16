@@ -22,18 +22,13 @@ class Deck
 public:
     Deck();
     
-    //CardColor getCardColor();
     CardPtr drawCard();
     bool isEmpty() const;
-    //void nextCard();
     void shuffle();
-    //void sort();
-    //bool isFlipped() const {return _isFlipped;}
     
 private:
     std::vector<CardPtr> _deck;
     int _topOfDeck;
-    //bool _isFlipped;
 };
 
 

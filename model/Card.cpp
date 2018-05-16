@@ -23,6 +23,16 @@ std::string Card::toString() const
     return  faceNames.at(face) +   suitNames.at(suit);
 }
 
+void Card::flip()
+{
+    _flipped = _flipped ? false : true;
+}
+
+void Card::setMatched(bool matched)
+{
+    _matched = matched;
+}
+
 std::ostream& operator<<(std::ostream& os, Card& c)
 {
     os << c.toString();

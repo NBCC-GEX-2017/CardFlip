@@ -21,15 +21,17 @@ enum class CardColor {Black, Red};
 class Card
 {
 public:
-    Card(Face f, Suit s) : suit(s), face(f) {}
+    Card(Face f, Suit s) : suit(s), face(f), _matched(false),_flipped(false) {}
     const Suit suit;
     const Face face;
     CardColor getCardColor() const;
     std::string toString() const;
-    
-private:
+    void flip();
+    void setMatched(bool matched);
     bool isMatched() const {return _matched;}
     bool isFlipped() const {return _flipped;}
+private:
+
     bool _matched;
     bool _flipped;
 public:
