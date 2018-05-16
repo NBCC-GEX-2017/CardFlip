@@ -86,36 +86,36 @@ MainView::~MainView()
 void MainView::onCardClick(){
 
     //auto* card = dynamic_cast<GameButton*>(sender());
-    deck->nextCard();
+    //deck->nextCard();
     drawView();
 
 }
 
 void MainView::drawView(){
 
-    for(int i=0;i<32;i++)
-    {
-        if(deck->isFlipped())
-        {
-            if(deck->getCardColor()== CardColor::Red){
-               cardDisplayBtns[i]->setStyleSheet("border-image:url(:/new/Media/Media/cardfront.png); "
-                                             "color: red;");
-            }
-            else{
-               cardDisplayBtns[i]->setStyleSheet("border-image:url(:/new/Media/Media/cardfront.png); "
-                                             "color: black;");
-            }
+//    for(int i=0;i<32;i++)
+//    {
+//        if(deck->isFlipped())
+//        {
+//            if(deck->getCardColor()== CardColor::Red){
+//               cardDisplayBtns[i]->setStyleSheet("border-image:url(:/new/Media/Media/cardfront.png); "
+//                                             "color: red;");
+//            }
+//            else{
+//               cardDisplayBtns[i]->setStyleSheet("border-image:url(:/new/Media/Media/cardfront.png); "
+//                                             "color: black;");
+//            }
 
-            cardDisplayBtns[i]->setText(QString::fromStdString(deck->topCardToString()));
+//            cardDisplayBtns[i]->setText(QString::fromStdString(deck->topCardToString()));
 
-        }
-        else
-        {
-            cardDisplayBtns[i]->setStyleSheet("border-image:url(:/new/Media/Media/cardback.png);");
-            cardDisplayBtns[i]->setText("");
+//        }
+//        else
+//        {
+//            cardDisplayBtns[i]->setStyleSheet("border-image:url(:/new/Media/Media/cardback.png);");
+//            cardDisplayBtns[i]->setText("");
 
-        }
-    }
+//        }
+//    }
 
 
 }
