@@ -1,6 +1,8 @@
 #include "Control/mainview.h"
 #include "ui_mainview.h"
 #include "View/cardbutton.h"
+#include "Model/game.h"
+#include "Model/Card.h"
 #include <QPushButton>
 #include <QVBoxLayout>
 #include <QHBoxLayout>
@@ -21,6 +23,7 @@ MainView::MainView(QWidget *parent) :
     deck->shuffle();
     // set up model Deck deck; deck shuffle
 
+    game = std::unique_ptr<Game>(new Game(CARD_ROWS * CARD_COLS, *deck));
     // set up layouts
     //  central widget -> vlMain -> hlCard
     //                           -> hlShuffle
@@ -80,27 +83,30 @@ MainView::~MainView()
 
 void MainView::onCardClick()
 {
-    //deck->nextCard();
+    auto fromButton = sender();
+    CardButton* fromCardButton = dynamic_cast<CardButton*>(fromButton);
+    game->selectCardI(fromCardButton->getIndex());
     drawView();
 }
 
 void MainView::drawView()
 {
-    //for (int i=0;i<cardButtons.size();i++)
-    //{
-        //if (deck->isFlipped())
-        //{
-            //if(deck->getCardColor() == CardColor::Red)
-                //cardButtons[i]->setStyleSheet("border-image:url(:/media/Media/cardfront.png); color:red;");
-            //else
-                //cardButtons[i]->setStyleSheet("border-image:url(:/media/Media/cardfront.png); color:black;");
+    for (auto& c : cardButtons)
+    {
+        CardPtr card = game->getCardI(c->getIndex());
 
-            //cardButtons[i]->setText(QString::fromStdString(deck->topCardToString()));
-        //}
-        //else
-        //{
-            //cardButtons[i]->setStyleSheet("border-image:url(:/media/Media/cardback.png)");
-            //cardButtons[i]->setText("");
-        //}
-    //}
+        if (card->isFlipped())
+        {
+            c->setText(QString::fromStdString(card->toString()));
+            if (card->getColor() == CardColor::Red)
+                c->setStyleSheet("border-image:url(:/media/Media/cardfront.png); color:red;");
+            else
+                c->setStyleSheet("border-image:url(:/media/Media/cardfront.png); color:black;");
+        }
+        else
+        {
+            c->setText("");
+            c->setStyleSheet("border-image:url(:/media/Media/cardback.png);");
+        }
+    }
 }

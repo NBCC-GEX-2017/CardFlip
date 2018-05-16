@@ -27,14 +27,16 @@ SOURCES += \
         main.cpp \
         Control/mainview.cpp \
     Model/Card.cpp \
-    Model/Deck.cpp
+    Model/Deck.cpp \
+    Model/game.cpp
 
 
 HEADERS += \
         Control/mainview.h \
     Model/Card.h \
     Model/Deck.h \
-    View/cardbutton.h
+    View/cardbutton.h \
+    Model/game.h
 
 
 FORMS += \

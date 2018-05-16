@@ -5,6 +5,7 @@
 #include <memory>
 #include <vector>
 #include "Model/Deck.h"
+#include "Model/game.h"
 
 
 namespace Ui {
@@ -29,6 +30,7 @@ private:
     Ui::MainView *ui;
 
     std::unique_ptr<Deck> deck;
+    std::unique_ptr<Game> game;
     std::vector<CardButton*> cardButtons;
 
 };
