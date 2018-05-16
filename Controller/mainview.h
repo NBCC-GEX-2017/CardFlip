@@ -5,11 +5,14 @@
 #include "Model/Deck.h"
 #include <memory>
 #include <QPushButton>
+#include <Model/game.h>
 
 
 namespace Ui {
 class MainView;
 }
+
+class CardQPushButton;
 
 class MainView : public QMainWindow
 {
@@ -26,10 +29,15 @@ private:
     void drawView();
 
 private:
+    int getIndexOfPtr(CardQPushButton* ptr) const;
+
+private:
     Ui::MainView *ui;
     std::unique_ptr<Deck> deck;
     QPushButton* cardDisplayBtn;
-    std::vector<QPushButton*> cardDisplayBtns;
+    Game* game;
+    //std::vector<QPushButton*> cardDisplayBtns;
+    std::vector<CardQPushButton*> cardDisplayBtns;
 
 
 };
