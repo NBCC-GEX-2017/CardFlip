@@ -15,6 +15,7 @@ MainView::MainView(QWidget *parent) :
 
     deck = std::unique_ptr<Deck>(new Deck());
     deck->shuffle();
+   matchGame = std::unique_ptr<MatchingGame>(new MatchingGame(20, *deck));//CAN I DO THIS????
     ui->centralWidget->setStyleSheet(QStringLiteral("background-color:green"));
     auto vlmain = new QVBoxLayout(ui->centralWidget);
     auto gridmain = new QGridLayout();
@@ -67,7 +68,8 @@ MainView::~MainView()
 
 void MainView::onCardClick()
 {
-    //deck->nextCard();
+    auto* btn = dynamic_cast<CardQPushButton*>(sender());
+    matchGame->flipCardAt(btn->getIntex());
     drawView();
 }
 
@@ -75,6 +77,16 @@ void MainView::drawView()
 {
     for(int i = 0; i < cardDisplayBtn.size(); i++)
     {
-        cardDisplayBtn[i]->setStyleSheet("border-image:url(:/new/media/Media/cardfront.png); color: black;");
+        if(matchGame->getCardAt(i)->isFlipped())
+        {
+
+            if(matchGame->getCardAt(i)->getCardColor() == CardColor::Red)
+                cardDisplayBtn[i]->setStyleSheet("border-image:url(:/new/media/Media/cardfront.png); color: red;");
+           else
+                cardDisplayBtn[i]->setStyleSheet("border-image:url(:/new/media/Media/cardfront.png); color: black;");
+            cardDisplayBtn[i]->setText( QString::fromStdString(matchGame->getCardAt(i)->toString()));
+
+        }
+
     }
 }

@@ -3,9 +3,11 @@
 
 #include <QMainWindow>
 #include "model/Deck.h"
+#include "model/matchinggame.h"
 #include <memory>
 #include <vector>
 #include "view/cardqpushbutton.h"
+
 
 namespace Ui {
 class MainView;
@@ -27,7 +29,7 @@ private:
     std::unique_ptr<Deck> deck;
     std::vector <QPushButton*> cardDisplayBtn;
     QFont font;
-    //QPushButton* card ;
+    std::unique_ptr<MatchingGame> matchGame;
 };
 
 #endif // MAINVIEW_H
