@@ -91,12 +91,7 @@ void MainView::drawView()
 
     for (auto& c : cardButtons)
     {
-        if (deck->getCardColor() == CardColor::Red)
-            c->setStyleSheet("border-image:url(:/media/Media/cardfront.png); color: red;");
-        else
-            c->setStyleSheet("border-image:url(:/media/Media/cardfront.png); color: black;");
 
-        c->setText(QString::fromStdString(deck->topCardToString()));
     }
 
 }
