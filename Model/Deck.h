@@ -22,14 +22,11 @@ class Deck
 public:
     Deck();
     
-
     bool isEmpty() const;
     CardPtr drawCard();
 
     void shuffle();
 
-
-    
 private:
     std::vector<CardPtr> _deck;
     int _topOfDeck;
