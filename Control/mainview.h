@@ -13,7 +13,7 @@ namespace Ui {
 class MainView;
 }
 
-class QPushButton;
+class CardQPushButton;
 
 class MainView : public QMainWindow
 {
@@ -36,7 +36,7 @@ private:
 
     std::unique_ptr<Deck> deck;
     /////////////////////////
-    std::vector<QPushButton*> cardDisplayBtns;
+    std::vector<CardQPushButton*> cardDisplayBtns;
  //change to a vector. to deal 32 cards in a grid...refer to demo03 (tic tac toe)
 
 

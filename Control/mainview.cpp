@@ -6,6 +6,7 @@
 #include <QGridLayout>
 #include <QString>
 #include <QFont>
+#include <View/cardqpushbutton.h>
 
 
 
@@ -35,7 +36,7 @@ MainView::MainView(QWidget *parent) :
 
     for(int i=0;i<32;i++)
     {
-        auto* card = new QPushButton();
+        auto* card = new CardQPushButton(i);
 
 
         card->setFont(font);
@@ -46,7 +47,7 @@ MainView::MainView(QWidget *parent) :
 
         cardsLayout->addWidget(card,i%4,i/4); //set buttons on a grid
             connect(card,
-                    &QPushButton::clicked, //connect buttons to clicked event
+                    &CardQPushButton::clicked, //connect buttons to clicked event
                     this, //parent
                     &MainView::onCardClick); //clicked event calls onButtonClick code
 
@@ -62,8 +63,7 @@ MainView::MainView(QWidget *parent) :
     // set up shuffleButton
 
    auto shuffleButton = new QPushButton();
-   shuffleLayout->addWidget(shuffleButton);
-   //shuffleButton->setFont(font);
+   shuffleLayout->addWidget(shuffleButton);   
    shuffleButton->setText("Shuffle");
    shuffleButton->setMinimumSize(QSize(128,20));
    shuffleButton->setMaximumSize(QSize(128,20));
@@ -85,8 +85,10 @@ MainView::~MainView()
 
 void MainView::onCardClick(){
 
-    //auto* card = dynamic_cast<GameButton*>(sender());
+    auto* card = dynamic_cast<CardQPushButton*>(sender());
     //deck->nextCard();
+    card->getIndex();
+
     drawView();
 
 }
@@ -95,9 +97,9 @@ void MainView::drawView(){
 
 //    for(int i=0;i<32;i++)
 //    {
-//        if(deck->isFlipped())
+//        if(card->isFlipped())
 //        {
-//            if(deck->getCardColor()== CardColor::Red){
+//            if(card->getCardColor()== CardColor::Red){
 //               cardDisplayBtns[i]->setStyleSheet("border-image:url(:/new/Media/Media/cardfront.png); "
 //                                             "color: red;");
 //            }
