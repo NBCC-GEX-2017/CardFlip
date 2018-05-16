@@ -16,7 +16,7 @@
 struct Card;
 using CardPtr = std::shared_ptr<Card>;
 
-enum class CardColor {Black, Red};
+
 class Deck
 {
 public:

@@ -17,15 +17,22 @@
 
 enum class Suit {CLUB, DIAMOND, HEART, SPADE};
 enum class Face {ACE, TWO, THREE, FOUR, FIVE, SIX, SEVEN, EIGHT, NINE, TEN, JACK, QUEEN, KING};
-
-struct Card
+enum class CardColor {Black, Red};
+class Card
 {
+public:
     Card(Face f, Suit s) : suit(s), face(f) {}
     const Suit suit;
     const Face face;
-    
+    CardColor getCardColor() const;
     std::string toString() const;
     
+private:
+    bool isMatched() const {return _matched;}
+    bool isFlipped() const {return _flipped;}
+    bool _matched;
+    bool _flipped;
+public:
     // class members ///////////////////////////////////
     static const std::set<Suit> suits;
     static const std::set<Face> faces;

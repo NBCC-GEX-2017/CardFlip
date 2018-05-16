@@ -8,6 +8,16 @@
 
 #include "Card.h"
 
+CardColor Card::getCardColor() const
+{
+    if(suit == Suit::DIAMOND || suit == Suit::HEART)
+    {
+        return CardColor::Red;
+    }
+    else
+        return CardColor::Black;
+}
+
 std::string Card::toString() const
 {
     return  faceNames.at(face) +   suitNames.at(suit);
