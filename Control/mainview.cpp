@@ -36,18 +36,18 @@ MainView::MainView(QWidget *parent) :
 
     ui->centralWidget->setStyleSheet("background-color:green;");
 
-    QFont font;
-    font.setPixelSize(40);
+//   QFont font;
+//   font.setPixelSize(40);
 
     // set up cardButton
     for (int i=0;i<CARD_ROWS * CARD_COLS;++i)
     {
         CardButton* cardButton = new CardButton(i);
-        cardButton->setFont(font);
-        cardButton->setMinimumSize(QSize(128,192));
-        cardButton->setMaximumSize(QSize(128,192));
-        cardButton->setText("");
-        cardButton->setStyleSheet("border-image:url(:/media/Media/cardback.png)");
+//       cardButton->setFont(font);
+//       cardButton->setMinimumSize(QSize(128,192));
+//       cardButton->setMaximumSize(QSize(128,192));
+//       cardButton->setText("");
+//       cardButton->setStyleSheet("border-image:url(:/media/Media/cardback.png)");
 
         grid->addWidget(cardButton, i/CARD_COLS, i%CARD_COLS);
 

@@ -17,14 +17,14 @@ void Game::selectCardI(int index)
 //        if (c->isFlipped())
 //            c->flip();
 //    });
-
+//
 //    if (index < cards.size())
 //    {
 //        cards[index]->flip();
 //    }
     if(index < cards.size())
     {
-        cards[index]->flip();
+    cards[index]->flip();
     }
 }
 
