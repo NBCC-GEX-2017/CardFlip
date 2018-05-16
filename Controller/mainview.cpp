@@ -1,6 +1,9 @@
 #include "Controller/mainview.h"
 #include "ui_mainview.h"
 
+const int CARD_ROWS = 4;
+const int CARD_COLS = 8;
+
 MainView::MainView(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainView)
@@ -29,9 +32,9 @@ MainView::MainView(QWidget *parent) :
     vlmain->addLayout(hlShuffle);
 
     //Homework - Grid
-    for(int i = 0; i < 32; i++){
-        auto cardBtn = new QPushButton();
-
+    for(int i = 0; i < CARD_COLS*CARD_ROWS; i++){
+        auto cardBtn = new CardQPushButton(i);
+        //The font may be moved to the CardQPushButton
         QFont font;
         font.setPixelSize(40);
 
@@ -42,11 +45,11 @@ MainView::MainView(QWidget *parent) :
         cardBtn->setStyleSheet(QStringLiteral("border-image:url(:/media/Media/cardback.png)"));
 
         connect(cardBtn,
-                &QPushButton::clicked,
+                &CardQPushButton::clicked,
                 this,
                 &MainView::changeCard);
 
-        glCard->addWidget(cardBtn, i/8, i%8);
+        glCard->addWidget(cardBtn, i/CARD_COLS, i%CARD_COLS);
         _cardBtn.push_back(cardBtn);
     }
 

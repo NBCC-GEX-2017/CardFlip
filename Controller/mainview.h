@@ -9,6 +9,7 @@
 #include <memory>
 #include <QMainWindow>
 #include <vector>
+#include "View/cardqpushbutton.h"
 
 namespace Ui {
 class MainView;
@@ -31,7 +32,7 @@ private:
     std::unique_ptr<Deck> _deck;
     QPushButton* _shuffleButton;
     //QPushButton* _cardBtn;
-    std::vector<QPushButton*> _cardBtn;
+    std::vector<CardQPushButton*> _cardBtn;
     //homework -> vector of cards -> grid 4 x 8
     int currentCard{0};
     void drawView();

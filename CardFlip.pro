@@ -32,7 +32,8 @@ SOURCES += \
 HEADERS += \
         Controller/mainview.h \
     Model/Card.h \
-    Model/Deck.h
+    Model/Deck.h \
+    View/cardqpushbutton.h
 
 FORMS += \
         View/mainview.ui
