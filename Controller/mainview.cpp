@@ -5,6 +5,8 @@
 #include <QHboxLayout>
 #include <QString>
 #include <QFont>
+#include <QGridLayout>
+
 
 MainView::MainView(QWidget *parent) :
     QMainWindow(parent),
@@ -12,79 +14,46 @@ MainView::MainView(QWidget *parent) :
 {
     ui->setupUi(this);
 
-    // set up model Deck deck; deck.shuffle
-
-    // set up layouts
-    //  central widget -> vlMain -> hlCard
-    //                           -> hlShuffle
-    auto vlmain = new QVBoxLayout(ui->centralWidget);
-
-    auto hlcard = new QHBoxLayout();
-    vlmain->addLayout(hlcard);
-
-    auto hlshuffle = new QHBoxLayout();
-    vlmain->addLayout(hlshuffle);
-
-    //vlmain->addSpacing(100);
-
-    auto hl_space_demo = new QHBoxLayout();
-    vlmain->addLayout(hl_space_demo);
+    deck = std::unique_ptr<Deck>(new Deck());  //
+    deck->shuffle();                           //
 
 
-    vlmain->addStretch(1);
-    ui->centralWidget->setStyleSheet(QStringLiteral("background-color:darkolivegreen"));
-
-    // set up cardButton
+    auto* grid = new QGridLayout(ui->centralWidget);
     QFont font;
     font.setPixelSize(40);
 
-    auto* card = new QPushButton;
-    card->setFont(font);
-    card->setMinimumSize(QSize(128,192));
-    card->setMaximumSize(QSize(128,192));
-    card->setText("");
-    card->setStyleSheet("border-image:url(:/media/Media/cardback.png)");
+    for(int i=0;i<32;i++){
+        QPushButton* buttons = new QPushButton();
+        buttons->setFont(font);
+        buttons->setMaximumSize(QSize(QSize(128,192)));
+        buttons->setMinimumSize(QSize(QSize(128,192)));
+        buttons->setText("");
+        buttons->setStyleSheet("border-image:url(:/media/Media/cardback.png)");
 
-    hlcard->addWidget(card);
-    hlcard->addStretch(1);
+        grid->addWidget(buttons, i/8, i%8);
 
-    // set up shuffle button
+        connect(buttons,
+                &QPushButton::clicked,
+                this,
+                &MainView::onCardClick);
+
+        btn.push_back(buttons);
+
+    }
 
     auto shuffleButton = new QPushButton();
     shuffleButton->setText("Shuffle");
     shuffleButton->setMinimumSize(QSize(128,20));
     shuffleButton->setMaximumSize(QSize(128,20));
     shuffleButton->setStyleSheet(QStringLiteral("background-color:aliceblue"));
+    grid->addWidget(shuffleButton);
 
-    hlshuffle->addStretch(1);
-    hlshuffle->addWidget(shuffleButton);
 
-    // add some more buttons
-    for (int i=0;i<5;++i)
-    {
-        auto btn = new QPushButton();
-        btn->setText("X");
-        btn->setMinimumSize(QSize(20,20));
-        btn->setMaximumSize(QSize(20,20));
-        btn->setStyleSheet(QStringLiteral("background-color:plum"));
-        hl_space_demo->addWidget(btn);
-    }
+    connect(shuffleButton,
+            &QPushButton::clicked,
+            this,
+            [this](){deck->shuffle();drawView();});
 
-    hl_space_demo->addStretch(1);
-
-    // add some more buttons
-    for (int i=0;i<5;++i)
-    {
-        auto btn = new QPushButton();
-        btn->setText("X");
-        btn->setMinimumSize(QSize(20,20));
-        btn->setMaximumSize(QSize(20,20));
-        btn->setStyleSheet(QStringLiteral("background-color:plum"));
-        hl_space_demo->addWidget(btn);
-        hl_space_demo->addSpacing(20);
-    }
-
-    hl_space_demo->addStrut(2000);
 
 }
 
@@ -92,4 +61,28 @@ MainView::MainView(QWidget *parent) :
 MainView::~MainView()
 {
     delete ui;
+}
+
+
+void MainView::onCardClick(){
+    deck->nextCard();
+    drawView();
+}
+
+void MainView::drawView() {
+
+    for (int i=0;i<32;i++){
+        if(deck->isFlipped()){
+            if(deck->getCardColor() == CardColor::Red){
+                btn[i]->setStyleSheet("border-image:url(:/media/Media/cardfront.png); color:red;");
+            }else {
+                btn[i]->setStyleSheet("border-image:url(:/media/Media/cardfront.png); color:black;");
+            }
+            btn[i]->setText(QString::fromStdString(deck->topCardToString()));
+        } else{
+            btn[i]->setStyleSheet("border-image:url(:/media/Media/cardback.png)");
+            btn[i]->setText("");
+        }
+    }
+
 }
