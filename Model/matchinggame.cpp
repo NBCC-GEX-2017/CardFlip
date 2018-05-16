@@ -19,8 +19,13 @@ CardPtr MatchingGame::getCardN(int index)
 
 void MatchingGame::selectCardN(int index)
 {
-    if (index < cards.size())
+    if (index < cards.size() )
     {
         cards[index]->flip();
+        for (int i=0;i<cards.size();++i)
+        {
+            if (cards[i]->isFlipped() && i != index)
+                cards[i]->flip();
+        }
     }
 }
