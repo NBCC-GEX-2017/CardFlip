@@ -77,19 +77,4 @@ void MainView::drawView()
     {
         cardDisplayBtn[i]->setStyleSheet("border-image:url(:/new/media/Media/cardfront.png); color: black;");
     }
-//    if(deck->isFlipped())
-//    {
-//        if(deck->getCardColor() == CardColor::Red)
-//        {
-//            cardDisplayBtn->setStyleSheet("border-image:url(:/new/media/Media/cardfront.png); color: red;");
-//        }
-//        cardDisplayBtn->setStyleSheet("border-image:url(:/new/media/Media/cardfront.png); color: black;");
-//        cardDisplayBtn->setText(QString::fromStdString(deck->topCardToString()));
-
-//    }
-//    else
-//    {
-//        cardDisplayBtn->setStyleSheet("border-image:url(:/new/media/Media/cardback.png)");
-//        cardDisplayBtn->setText("");
-//    }
 }
