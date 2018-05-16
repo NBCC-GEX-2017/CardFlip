@@ -78,7 +78,7 @@ void MainView::onCardClick()
 }
 void MainView::drawView()
 {
-    for(auto c : cardDisplayBtns)
+    for(auto &c : cardDisplayBtns)
     {
 
     }

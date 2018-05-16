@@ -25,6 +25,16 @@ CardColor Card::getColor() const
     }
 }
 
+void Card::flip()
+{
+    _flipped= _flipped ? false : true;//if flipped == true then set to false else set to true
+}
+
+void Card::setMatched(bool matched)
+{
+    _matched=matched;
+}
+
 
 std::ostream& operator<<(std::ostream& os, Card& c)
 {

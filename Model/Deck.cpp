@@ -71,6 +71,17 @@ CardPtr Deck::drawCard()
 
 void Deck::shuffle()
 {
+    std::for_each(_deck.begin(),
+                  _deck.end(),
+                  [](CardPtr e)
+    {
+        if(e->isFlipped())
+        {
+            e->flip();
+        }
+        e->setMatched(false);
+    }
+    );
     for (size_t i=0;i<_deck.size();++i)
     {
         swap(_deck[i],  _deck[i + (rand() % (_deck.size()-i))]);
