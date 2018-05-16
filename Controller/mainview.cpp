@@ -73,14 +73,14 @@ MainView::~MainView()
 
 void MainView::onCardClick()
 {
-    //deck->nextCard();
+    deck->nextCard();
     drawView();
 }
 void MainView::drawView()
 {
     for(int i=0; i<cardDisplayBtns.size(); i++)
     {
-        if(!deck->isFlipped())
+        if(deck->isFlipped())
         {
             if(deck->getCardColor()==CardColor::Red)
             {
