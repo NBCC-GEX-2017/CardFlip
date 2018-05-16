@@ -19,21 +19,29 @@ enum class Suit {CLUB, DIAMOND, HEART, SPADE};
 enum class Face {ACE, TWO, THREE, FOUR, FIVE, SIX, SEVEN, EIGHT, NINE, TEN, JACK, QUEEN, KING};
 enum class CardColor {Black, Red};
 
-struct Card
+class Card
 {
+public:
     Card(Face f, Suit s) : suit(s), face(f) {}
+    std::string toString() const;
+    CardColor getColor() const;
     const Suit suit;
     const Face face;
-    
-    std::string toString() const;
-    
+
+    bool isMatched() const { return _matched; };
+    bool isFlipped() const { return _flipped; };
+
     // class members ///////////////////////////////////
     static const std::set<Suit> suits;
     static const std::set<Face> faces;
-    
+
+private:
+    bool _matched;
+    bool _flipped;
+
     static const std::map<Face, std::string>  faceNames;
     static const std::map<Suit, std::string>  suitNames;
-    ////////////////////////////////////////////////////
+
 };
 
 //
