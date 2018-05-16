@@ -13,7 +13,7 @@
 #include <memory>
 
 // forward declaration
-struct Card;
+class Card;
 using CardPtr = std::shared_ptr<Card>;
 
 

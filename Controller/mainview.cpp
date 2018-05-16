@@ -1,11 +1,14 @@
 #include "mainview.h"
 #include "ui_mainview.h"
 #include <QPushButton>
-#include <QVboxLayout>
-#include <QHboxLayout>
+#include <QVBoxLayout>
+#include <QHBoxLayout>
 #include <QGridLayout>
 #include <QString>
 #include <QFont>
+#include "View/cardqpushbutton.h"
+#include "Model/matchinggame.h"
+#include "Model/Deck.h"
 
 
 const int CARD_ROWS = 4;
@@ -19,6 +22,8 @@ MainView::MainView(QWidget *parent) :
 
     deck = std::unique_ptr<Deck>(new Deck());
     deck->shuffle();
+
+    game = std::unique_ptr<MatchingGame>(new MatchingGame(CARD_ROWS * CARD_COLS, *deck));
 
     auto vlmain = new QVBoxLayout(ui->centralWidget);
 
@@ -37,17 +42,17 @@ MainView::MainView(QWidget *parent) :
 
     for (int i=0;i< CARD_COLS * CARD_ROWS;++i)
     {
-        auto btn = new QPushButton;
+        auto btn = new CardQPushButton(i);
         btn->setFont(font);
         btn->setMinimumSize(QSize(128,192));
         btn->setMaximumSize(QSize(128,192));
         btn->setText("");
         btn->setStyleSheet("border-image:url(:/media/Media/cardback.png)");
-        glcard->addWidget(btn, i / CARD_COLS, i %CARD_COLS);
+        glcard->addWidget(btn, i / CARD_COLS, i % CARD_COLS);
         cardButtons.push_back(btn);
 
         connect(btn,
-                &QPushButton::clicked,
+                &CardQPushButton::clicked,
                 this,
                 &MainView::onCardClick);
 
@@ -82,7 +87,9 @@ MainView::~MainView()
 
 void MainView::onCardClick()
 {
-    //deck->nextCard();
+    auto fromButton = sender();
+    CardQPushButton* fromCardButton = dynamic_cast<CardQPushButton*>(fromButton);
+    game->selectCardN(fromCardButton->getIndex());
     drawView();
 }
 
@@ -91,7 +98,22 @@ void MainView::drawView()
 
     for (auto& c : cardButtons)
     {
+        CardPtr card = game->getCardN(c->getIndex());
+        if (card->isFlipped())
+        {
+            c->setText(QString::fromStdString(card->toString()));
+            if (card->getColor() == CardColor::Red)
+                c->setStyleSheet("border-image:url(:/media/Media/cardfront.png); color: red;");
+            else
+                c->setStyleSheet("border-image:url(:/media/Media/cardfront.png); color: black;");
 
+
+        }
+        else
+        {
+            c->setText("");
+            c->setStyleSheet("border-image:url(:/media/Media/cardback.png);");
+        }
     }
 
 }
