@@ -90,7 +90,7 @@ void MainView::shuffle()
 
 void MainView::drawView()
 {
-    for(int i =0; i < _cardBtn.size(); i++){
+    /*for(int i =0; i < _cardBtn.size(); i++){
         if(_deck->isFlipped()){
             if(_deck->getCardColor() == CardColor::Red){
                 _cardBtn[i]->setStyleSheet(QStringLiteral("border-image:url(:/media/Media/cardfront.png);color:red;"));
@@ -104,6 +104,6 @@ void MainView::drawView()
             _cardBtn[i]->setStyleSheet(QStringLiteral("border-image:url(:/media/Media/cardback.png)"));
             _cardBtn[i]->setText("");
         }
-    }
+    }*/
 
 }

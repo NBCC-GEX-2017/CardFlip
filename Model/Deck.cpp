@@ -20,16 +20,7 @@ Deck::Deck()
         for (auto s : Card::suits)
             _deck.push_back(std::make_shared<Card>(Card(f,s)));
     
-    _isFlipped = false;
-    _topOfDeck = static_cast<int>(_deck.size()-1);
-}
-
-CardColor Deck::getCardColor()
-{
-    if (_deck[_topOfDeck]->suit == Suit::DIAMOND || _deck[_topOfDeck]->suit == Suit::HEART)
-        return CardColor::Red;
-    else
-        return CardColor::Black;
+    _topOfDeck = _deck.size()-1;
 }
 
 bool Deck::isEmpty() const
@@ -37,24 +28,16 @@ bool Deck::isEmpty() const
     return (_topOfDeck < 0);
 }
 
-void Deck::sort()
+CardPtr Deck::drawCard()
 {
-    std::sort(_deck.begin(), _deck.end(),  [](CardPtr lhs, CardPtr rhs) { return (*lhs < *rhs);});
-    _isFlipped = false;
-     _topOfDeck = static_cast<int>(_deck.size()-1);
-}
-
-void Deck::nextCard()
-{
-    if (_isFlipped)
-         _topOfDeck = _topOfDeck ? _topOfDeck - 1 : 0;
+    if(isEmpty())
+    {
+        return nullptr;
+    }
     else
-        _isFlipped = true;
-}
-
-std::string Deck::topCardToString() const
-{
-    return _deck[_topOfDeck]->toString();
+    {
+        return _deck[_topOfDeck--];
+    }
 }
 
 void Deck::shuffle()
@@ -63,6 +46,5 @@ void Deck::shuffle()
     {
         swap(_deck[i],  _deck[i + (rand() % (_deck.size()-i))]);
     }
-    _topOfDeck = static_cast<int>(_deck.size()-1);
-    _isFlipped = false;
+    _topOfDeck = _deck.size()-1;
 }
