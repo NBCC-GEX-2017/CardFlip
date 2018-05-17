@@ -16,7 +16,6 @@
 struct Card;
 using CardPtr = std::shared_ptr<Card>;
 
-
 class Deck
 {
 public:

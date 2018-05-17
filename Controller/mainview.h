@@ -10,6 +10,8 @@
 #include <QMainWindow>
 #include <vector>
 #include "View/cardqpushbutton.h"
+#include "Controller/game.h"
+#include <QLabel>
 
 namespace Ui {
 class MainView;
@@ -31,11 +33,11 @@ private:
     Ui::MainView *ui;
     std::unique_ptr<Deck> _deck;
     QPushButton* _shuffleButton;
-    //QPushButton* _cardBtn;
+    Game* game;
     std::vector<CardQPushButton*> _cardBtn;
-    //homework -> vector of cards -> grid 4 x 8
     int currentCard{0};
     void drawView();
+    QLabel* _pointsLabel;
 };
 
 #endif // MAINVIEW_H
