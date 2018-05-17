@@ -7,6 +7,7 @@
 #include <vector>
 #include <memory>
 #include <QPushButton>
+#include "Control/game.h"
 
 
 namespace Ui {
@@ -38,7 +39,7 @@ private:
     /////////////////////////
     std::vector<CardQPushButton*> cardDisplayBtns;
  //change to a vector. to deal 32 cards in a grid...refer to demo03 (tic tac toe)
-
+    Game *game;
 
 
 };

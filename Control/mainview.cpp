@@ -19,6 +19,8 @@ MainView::MainView(QWidget *parent) :
     deck = std::unique_ptr<Deck>(new Deck);
     deck->shuffle();
 
+    game = new Game();
+
     //vertical layout
     auto vlmain = new QVBoxLayout(ui->centralWidget);
 
@@ -36,22 +38,23 @@ MainView::MainView(QWidget *parent) :
 
     for(int i=0;i<32;i++)
     {
-        auto* card = new CardQPushButton(i);
+        auto* btn = new CardQPushButton(i);
 
+        game->setCardAtN(deck->drawCard());
+        ////////////////////////////////
+        btn->setFont(font);
+        btn->setMinimumSize(QSize(128,192));
+        btn->setMaximumSize(QSize(128,192));
+        btn->setText("");
+        btn->setStyleSheet("border-image:url(:/new/Media/Media/cardback.png)");
 
-        card->setFont(font);
-        card->setMinimumSize(QSize(128,192));
-        card->setMaximumSize(QSize(128,192));
-        card->setText("");
-        card->setStyleSheet("border-image:url(:/new/Media/Media/cardback.png)");
-
-        cardsLayout->addWidget(card,i%4,i/4); //set buttons on a grid
-            connect(card,
+        cardsLayout->addWidget(btn,i%4,i/4); //set buttons on a grid
+            connect(btn,
                     &CardQPushButton::clicked, //connect buttons to clicked event
                     this, //parent
                     &MainView::onCardClick); //clicked event calls onButtonClick code
 
-            cardDisplayBtns.push_back(card); //insert buttons in vector
+            cardDisplayBtns.push_back(btn); //insert buttons in vector
 
             //grid->addWidget(cardDisplayBtns[i]);
     }
@@ -85,9 +88,10 @@ MainView::~MainView()
 
 void MainView::onCardClick(){
 
-    auto* card = dynamic_cast<CardQPushButton*>(sender());
+    CardQPushButton* btn = dynamic_cast<CardQPushButton*>(sender());
     //deck->nextCard();
-    card->getIndex();
+    game->setFlipped(btn->getIndex());
+
 
     drawView();
 
@@ -95,29 +99,29 @@ void MainView::onCardClick(){
 
 void MainView::drawView(){
 
-//    for(int i=0;i<32;i++)
-//    {
-//        if(card->isFlipped())
-//        {
-//            if(card->getCardColor()== CardColor::Red){
-//               cardDisplayBtns[i]->setStyleSheet("border-image:url(:/new/Media/Media/cardfront.png); "
-//                                             "color: red;");
-//            }
-//            else{
-//               cardDisplayBtns[i]->setStyleSheet("border-image:url(:/new/Media/Media/cardfront.png); "
-//                                             "color: black;");
-//            }
+    for(int i=0;i<32;i++)
+    {
+        if(game->isFlipped(i))
+        {
+            if(game->getCardColor(i)== CardColor::Red){
+               cardDisplayBtns[i]->setStyleSheet("border-image:url(:/new/Media/Media/cardfront.png); "
+                                             "color: red;");
+            }
+            else{
+               cardDisplayBtns[i]->setStyleSheet("border-image:url(:/new/Media/Media/cardfront.png); "
+                                             "color: black;");
+            }
 
-//            cardDisplayBtns[i]->setText(QString::fromStdString(deck->topCardToString()));
+            cardDisplayBtns[i]->setText(QString::fromStdString(game->getText(i)));
 
-//        }
-//        else
-//        {
-//            cardDisplayBtns[i]->setStyleSheet("border-image:url(:/new/Media/Media/cardback.png);");
-//            cardDisplayBtns[i]->setText("");
+        }
+        else
+        {
+            cardDisplayBtns[i]->setStyleSheet("border-image:url(:/new/Media/Media/cardback.png);");
+            cardDisplayBtns[i]->setText("");
 
-//        }
-//    }
+        }
+    }
 
 
 }
