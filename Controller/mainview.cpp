@@ -1,9 +1,36 @@
+/*
+* @file
+* @author Jhon Romero.
+* @version 1.0
+*
+* @section LICENSE
+*
+*
+* Copyright 2018 Jhon Romero
+* Permission to use, copy, modify, and/or distribute this software for
+* any purpose with or without fee is hereby granted, provided that the
+* above copyright notice and this permission notice appear in all copies.
+*
+* THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES
+* WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF
+* MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR
+* ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
+* WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN
+* ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
+* OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
+*
+* @section Academic Integrity
+* I certify that this work is solely my own and complies with
+* NBCC Academic Integrity Policy (policy 1111)
+*/
+
 #include "Controller/mainview.h"
 #include "ui_mainview.h"
 #include <QPushButton>
 #include <QVBoxLayout>
 #include <QHBoxLayout>
 #include <QString>
+#include <QDesktopWidget>
 #include <QFont>
 #include "View/cardqpushbutton.h"
 
@@ -15,59 +42,28 @@ MainView::MainView(QWidget *parent) :
     ui(new Ui::MainView)
 {
     ui->setupUi(this);
+    this->setWindowTitle("Memory game");//window title
 
-    //set up the Deck deck; deck.shuffle
+    QDesktopWidget dw;
 
-    //deck->shuffle();
+    //set size of the window
+    int x=dw.width()*0.7;
+    int y=dw.height()*0.8;
+
+    this->setFixedSize(x,y);
 
     game = new Game(ROWS*COLUMNS);
-
-
 
     //set up layout
     auto vlmain= new QVBoxLayout(ui->centralWidget);
 
-    //auto hlCard = new QHBoxLayout();
     auto* grid = new QGridLayout();
     auto hlShuffle = new QHBoxLayout();
-    //auto hl_space_demo = new QHBoxLayout();
 
-    //vlmain->addLayout(hlCard);
     vlmain->addLayout(grid);
     vlmain->addLayout(hlShuffle);
-    //vlmain->addLayout(hl_space_demo);
 
     ui->centralWidget->setStyleSheet(QStringLiteral("background-color:rgb(23,101,17)"));
-    // central widget -> vlMain -> hlCard
-    //                          -> hlShuffle
-
-    //set up grid
-
-
-    // set up cardButtons
-//    for(int i=0;i<32;i++){
-
-//        QFont font;
-//        font.setPixelSize(40);
-
-//        cardDisplayBtn = new QPushButton();
-//        grid->addWidget(cardDisplayBtn,i/8,i%8);
-
-//        cardDisplayBtn->setFont(font);
-//        cardDisplayBtn->setMinimumSize(QSize(100,150));
-//        cardDisplayBtn->setMaximumSize(QSize(100,150));
-//        cardDisplayBtn->setText("");
-//        cardDisplayBtn->setStyleSheet("border-image:url(:/media/Media/cardback.png)");
-
-//        //connect button
-//        connect(cardDisplayBtn,
-//                &QPushButton::clicked,
-//                this,
-//                &MainView::onCardClick);
-
-//        cardDisplayBtns.push_back(cardDisplayBtn);
-
-//    }
 
     for(int i=0;i<ROWS*COLUMNS;i++){
 
@@ -93,9 +89,6 @@ MainView::MainView(QWidget *parent) :
 
     }
 
-
-
-
     // set up shuffle button
     auto newShuffleBtn= new QPushButton();
 
@@ -112,34 +105,7 @@ MainView::MainView(QWidget *parent) :
     connect(newShuffleBtn,
             &QPushButton::clicked,
             this,
-            [this](){deck->shuffle();
-                    drawView();});
-
-//    // add some more buttons
-
-//    for (int i=0;i<5;++i)
-//    {
-//        auto btn = new QPushButton();
-//        btn->setText("X");
-//        btn->setMinimumSize(QSize(20,20));
-//        btn->setMaximumSize(QSize(20,20));
-//        btn->setStyleSheet(QStringLiteral("background-color:plum"));
-//        hl_space_demo->addWidget(btn);
-//    }
-
-//    hl_space_demo->addStretch(1);
-
-//    // add some more buttons
-//    for (int i=0;i<5;++i)
-//    {
-//        auto btn = new QPushButton();
-//        btn->setText("X");
-//        btn->setMinimumSize(QSize(20,20));
-//        btn->setMaximumSize(QSize(20,20));
-//        btn->setStyleSheet(QStringLiteral("background-color:plum"));
-//        hl_space_demo->addWidget(btn);
-//        hl_space_demo->addSpacing(20);
-//    }
+            [this](){delete (game); game = new Game(ROWS*COLUMNS); drawView();});
 
 
 }
@@ -154,10 +120,6 @@ void MainView::onCardClick()
     auto* btn= dynamic_cast<CardQPushButton*>(sender());//address of the sender pointer, returns a q object pointer
 
     game->flipCardN(btn->getIndex());
-    //game->flipCardN(getIndexOfPtr(btn));
-
-
-    //deck->nextCard();
     drawView();
 }
 
@@ -198,31 +160,7 @@ void MainView::drawView()
 
         }
 
-
-
     }
-//    for(int i=0;i<32;i++){
-
-//        if(deck->isFlipped()){
-//            if(deck->getCardColor()==CardColor::Red)
-//            {
-//                cardDisplayBtns[i]->setStyleSheet("border-image:url(:/media/Media/cardfront.png); color: red;");
-
-
-//            }
-//            else{
-//                cardDisplayBtns[i]->setStyleSheet("border-image:url(:/media/Media/cardfront.png); color: black;");
-//            }
-//            cardDisplayBtns[i]->setText(QString::fromStdString(deck->topCardToString()));
-
-//        }
-//        else{
-
-//            cardDisplayBtns[i]->setStyleSheet("border-image:url(:/media/Media/cardback.png)");
-//            cardDisplayBtns[i]->setText("");
-//        }
-
-//    }
 
 
 }
