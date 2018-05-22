@@ -99,6 +99,15 @@ void MainView::drawView()
     for (auto& c : cardButtons)
     {
         CardPtr card = game->getCardN(c->getIndex());
+        if(card->isMatched())
+        {
+            c->setText(QString::fromStdString(card->toString()));
+            if (card->getColor() == CardColor::Red)
+                c->setStyleSheet("border-image:url(:/media/Media/cardfrontGray.png); color: red;");
+            else
+                c->setStyleSheet("border-image:url(:/media/Media/cardfrontGray.png); color: black;");
+        }
+        else{
         if (card->isFlipped())
         {
             c->setText(QString::fromStdString(card->toString()));
@@ -113,6 +122,7 @@ void MainView::drawView()
         {
             c->setText("");
             c->setStyleSheet("border-image:url(:/media/Media/cardback.png);");
+        }
         }
     }
 
