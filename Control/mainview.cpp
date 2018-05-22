@@ -83,7 +83,8 @@ void MainView::drawView()
 
     for(int i = 0; i < cardDisplayBtns.size(); ++i)
     {
-        if(game->isFlipped(i)){
+        CardPtr card = game->getCardAtN(c->getIndex());
+        if(card->isMatched()){
             if(game->getCardColor(i) == CardColor::Red){
                 cardDisplayBtns[i]->setStyleSheet("border-image:url(:/media/Media/cardfront.png); color: red;");
             }
@@ -97,5 +98,6 @@ void MainView::drawView()
             cardDisplayBtns[i]->setText("");
         }
     }
+
 
 }

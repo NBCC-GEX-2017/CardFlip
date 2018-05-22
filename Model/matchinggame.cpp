@@ -15,6 +15,11 @@ void MatchingGame::setCardAtN(CardPtr c)
     cards.push_back(c);
 }
 
+void MatchingGame::getCardAtN(int n)
+{
+    return cards.at(n);
+}
+
 
 CardColor MatchingGame::getCardColor(int n) const
 {

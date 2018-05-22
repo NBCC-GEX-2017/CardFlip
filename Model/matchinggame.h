@@ -17,6 +17,7 @@ public:
     CardColor getCardColor(int n) const;
     std::string getText(int t);
     bool isFlipped(int f);
+    void getCardAtN(int n);
 
 
 private:

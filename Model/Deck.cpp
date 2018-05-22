@@ -47,7 +47,7 @@ void Deck::shuffle()
                     if(e->isFlipped())
                         e->flip();
                     else
-                        e->setMatched(false);
+                        e->setMatched(true);
     });
 
     for (size_t i=0;i<_deck.size();++i)
