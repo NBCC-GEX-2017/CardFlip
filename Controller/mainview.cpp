@@ -80,21 +80,56 @@ void MainView::onCardClick(){
 
 void MainView::drawView() {
 
-
-    for (int i=0;i<32;i++){
-         CardPtr card = matchingGame->getSquareN(btn[i]->getIndex());
-        if(card->isFlipped()){
-            if(card->getColor() == CardColor::Red ){
-                btn[i]->setStyleSheet("border-image:url(:/media/Media/cardfront.png); color:red;");
-            }else {
-                btn[i]->setStyleSheet("border-image:url(:/media/Media/cardfront.png); color:black;");
+    for(auto& c : btn){
+        CardPtr card = matchingGame->getSquareN(c->getIndex());
+        if(card->isMatched()){
+            c->setText(QString::fromStdString(card->toString()));
+            if(card->getColor() == CardColor::Red){
+                c->setStyleSheet("border-image:url(:/media/Media/cardfrontGray.png); color:red;");
+            }else{
+                c->setStyleSheet("border-image:url(:/media/Media/cardfrontGray.png); color:black;");
             }
-            btn[i]->setText(QString::fromStdString(card->toString()));
-        } else {
-            btn[i]->setStyleSheet("border-image:url(:/media/Media/cardback.png)");
-            btn[i]->setText("");
+
+        }else{
+            if(card->isFlipped()){
+                if(card->getColor() == CardColor::Red ){
+                    c->setStyleSheet("border-image:url(:/media/Media/cardfront.png); color:red;");
+                }else {
+                    c->setStyleSheet("border-image:url(:/media/Media/cardfront.png); color:black;");
+                }
+                c->setText(QString::fromStdString(card->toString()));
+            } else {
+                c->setStyleSheet("border-image:url(:/media/Media/cardback.png)");
+                c->setText("");
+            }
         }
     }
+
+
+//    for (int i=0;i<32;i++){
+//         CardPtr card = matchingGame->getSquareN(btn[i]->getIndex());
+//         if(card->isMatched()){
+//             btn[i]->setText(QString::fromStdString(card->toString()));
+//             if(card->getColor() == CardColor::Red){
+//                 btn[i]->setStyleSheet("border-image:url(:/media/Media/cardfrontGray.png); color:red;");
+//             }else{
+//                 btn[i]->setStyleSheet("border-image:url(:/media/Media/cardfrontGray.png); color:black;");
+//             }
+
+//         }else{
+//             if(card->isFlipped()){
+//                 if(card->getColor() == CardColor::Red ){
+//                     btn[i]->setStyleSheet("border-image:url(:/media/Media/cardfront.png); color:red;");
+//                 }else {
+//                     btn[i]->setStyleSheet("border-image:url(:/media/Media/cardfront.png); color:black;");
+//                 }
+//                 btn[i]->setText(QString::fromStdString(card->toString()));
+//             } else {
+//                 btn[i]->setStyleSheet("border-image:url(:/media/Media/cardback.png)");
+//                 btn[i]->setText("");
+//             }
+//         }
+//    }
 
 
 //    for (int i=0;i<32;i++){
