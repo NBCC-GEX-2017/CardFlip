@@ -15,6 +15,7 @@ public:
     std::string getText(int index);
     CardColor getCardColor(int index);
     bool isFlipped(int index);
+    bool isMatched(int index);
 private:
 
     std::vector<CardPtr> _cards;

@@ -91,7 +91,7 @@ void MainView::onCardClick(){
     CardQPushButton* btn = dynamic_cast<CardQPushButton*>(sender());
     //deck->nextCard();
     game->setFlipped(btn->getIndex());
-
+    //game->selectCardN(btn->getIndex());
 
     drawView();
 
@@ -101,26 +101,51 @@ void MainView::drawView(){
 
     for(int i=0;i<32;i++)
     {
-        if(game->isFlipped(i))
+        //getCardN
+        CardPtr card = game->getCardN(c->getIndex());
+
+        if(game->isMatched(i))
         {
+
             if(game->getCardColor(i)== CardColor::Red){
-               cardDisplayBtns[i]->setStyleSheet("border-image:url(:/new/Media/Media/cardfront.png); "
+               cardDisplayBtns[i]->setStyleSheet("border-image:url(:/Media/cardfrontGray.png); "
                                              "color: red;");
             }
             else{
-               cardDisplayBtns[i]->setStyleSheet("border-image:url(:/new/Media/Media/cardfront.png); "
+               cardDisplayBtns[i]->setStyleSheet("border-image:url(:/Media/cardfrontGray.png); "
                                              "color: black;");
             }
 
             cardDisplayBtns[i]->setText(QString::fromStdString(game->getText(i)));
 
-        }
-        else
+        }else
         {
-            cardDisplayBtns[i]->setStyleSheet("border-image:url(:/new/Media/Media/cardback.png);");
-            cardDisplayBtns[i]->setText("");
+            if(game->isFlipped(i))
+            {
+                if(game->getCardColor(i)== CardColor::Red){
+                   cardDisplayBtns[i]->setStyleSheet("border-image:url(:/new/Media/Media/cardfront.png); "
+                                                 "color: red;");
+                }
+                else{
+                   cardDisplayBtns[i]->setStyleSheet("border-image:url(:/new/Media/Media/cardfront.png); "
+                                                 "color: black;");
+                }
+
+                cardDisplayBtns[i]->setText(QString::fromStdString(game->getText(i)));
+
+            }
+            else
+            {
+                cardDisplayBtns[i]->setStyleSheet("border-image:url(:/new/Media/Media/cardback.png);");
+                cardDisplayBtns[i]->setText("");
+
+            }
 
         }
+
+
+
+
     }
 
 
