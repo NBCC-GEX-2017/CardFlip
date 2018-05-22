@@ -17,7 +17,7 @@ void MatchingGame::setCardAtN(CardPtr c)
 
 void MatchingGame::getCardAtN(int n)
 {
-    return cards.at(n);
+    cards.at(n);
 }
 
 
