@@ -17,7 +17,6 @@ MainView::MainView(QWidget *parent) :
     ui->setupUi(this);
 
     //set up the Deck deck; deck.shuffle
-    deck=std::unique_ptr<Deck>(new Deck());
 
     //deck->shuffle();
 
@@ -154,7 +153,8 @@ void MainView::onCardClick()
 {
     auto* btn= dynamic_cast<CardQPushButton*>(sender());//address of the sender pointer, returns a q object pointer
 
-    game->flipCardN(getIndexOfPtr(btn));
+    game->flipCardN(btn->getIndex());
+    //game->flipCardN(getIndexOfPtr(btn));
 
 
     //deck->nextCard();
@@ -168,24 +168,37 @@ void MainView::drawView()
 
         CardPtr card= game->getCardN(getIndexOfPtr(c));
 
-        if(card->isFlipped()){
-            if(card->getColor()==CardColor::Red)
-            {
-                c->setStyleSheet("border-image:url(:/media/Media/cardfront.png); color: red;");
-
-
-            }
-            else{
-                c->setStyleSheet("border-image:url(:/media/Media/cardfront.png); color: black;");
-            }
+        if(card->isMatched()){
             c->setText(QString::fromStdString(card->toString()));
-
+            if(card->getColor()==CardColor::Red)
+                c->setStyleSheet("border-image:url(:/media/Media/cardfrontGray.png); color: red;");
+            else
+                c->setStyleSheet("border-image:url(:/media/Media/cardfrontGray.png); color: black;");
         }
         else{
 
-            c->setStyleSheet("border-image:url(:/media/Media/cardback.png)");
-            c->setText("");
+            if(card->isFlipped()){
+                if(card->getColor()==CardColor::Red)
+                {
+                    c->setStyleSheet("border-image:url(:/media/Media/cardfront.png); color: red;");
+
+
+                }
+                else{
+                    c->setStyleSheet("border-image:url(:/media/Media/cardfront.png); color: black;");
+                }
+                c->setText(QString::fromStdString(card->toString()));
+
+            }
+            else{
+
+                c->setStyleSheet("border-image:url(:/media/Media/cardback.png)");
+                c->setText("");
+            }
+
         }
+
+
 
     }
 //    for(int i=0;i<32;i++){
