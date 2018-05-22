@@ -57,7 +57,12 @@ MainView::MainView(QWidget *parent) :
     connect (shuffle,
                  &QPushButton::clicked,
                  this,
-             [this](){deck->shuffle();drawView();});
+             [this](){
+        deck->shuffle();
+        matchGame->reDealCard(20, *deck);
+        drawView();
+
+    });
 
 }
 
@@ -75,17 +80,34 @@ void MainView::onCardClick()
 
 void MainView::drawView()
 {
+
     for(int i = 0; i < cardDisplayBtn.size(); i++)
     {
-        if(matchGame->getCardAt(i)->isFlipped())
+        CardPtr card = matchGame->getCardAt(i);
+        if(card->isMatched())
         {
-
+            cardDisplayBtn[i]->setDisabled(true);
+            if(matchGame->getCardAt(i)->getCardColor() == CardColor::Red)
+                cardDisplayBtn[i]->setStyleSheet("border-image:url(:/new/media/Media/cardfrontGray.png); color: red;"); //:/new/media/Media/cardfrontGray.png
+           else
+                cardDisplayBtn[i]->setStyleSheet("border-image:url(:/new/media/Media/cardfrontGray.png); color: black;");
+            cardDisplayBtn[i]->setText( QString::fromStdString(matchGame->getCardAt(i)->toString()));
+        }
+        else if(card->isFlipped())
+        {
+            cardDisplayBtn[i]->setDisabled(true);
             if(matchGame->getCardAt(i)->getCardColor() == CardColor::Red)
                 cardDisplayBtn[i]->setStyleSheet("border-image:url(:/new/media/Media/cardfront.png); color: red;");
            else
                 cardDisplayBtn[i]->setStyleSheet("border-image:url(:/new/media/Media/cardfront.png); color: black;");
             cardDisplayBtn[i]->setText( QString::fromStdString(matchGame->getCardAt(i)->toString()));
 
+        }
+        else
+        {
+            cardDisplayBtn[i]->setEnabled(true);
+            cardDisplayBtn[i]->setStyleSheet("border-image:url(:/new/media/Media/cardback.png); color: black;");
+            cardDisplayBtn[i]->setText( "");
         }
 
     }

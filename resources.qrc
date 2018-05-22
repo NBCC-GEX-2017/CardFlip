@@ -2,5 +2,6 @@
     <qresource prefix="/new/media">
         <file>Media/cardback.png</file>
         <file>Media/cardfront.png</file>
+        <file>Media/cardfrontGray.png</file>
     </qresource>
 </RCC>
