@@ -89,9 +89,8 @@ MainView::~MainView()
 void MainView::onCardClick(){
 
     CardQPushButton* btn = dynamic_cast<CardQPushButton*>(sender());
-    //deck->nextCard();
-    game->setFlipped(btn->getIndex());
-    //game->selectCardN(btn->getIndex());
+
+    game->selectCardN(btn->getIndex());
 
     drawView();
 
@@ -99,54 +98,46 @@ void MainView::onCardClick(){
 
 void MainView::drawView(){
 
-    for(int i=0;i<32;i++)
+    for(auto c : cardDisplayBtns)
     {
         //getCardN
         CardPtr card = game->getCardN(c->getIndex());
 
-        if(game->isMatched(i))
+        if(card->isMatched())
         {
-
-            if(game->getCardColor(i)== CardColor::Red){
-               cardDisplayBtns[i]->setStyleSheet("border-image:url(:/Media/cardfrontGray.png); "
+            if(card->getColor()== CardColor::Red){
+               c->setStyleSheet("border-image:url(:/Media/cardfrontGray.png); "
                                              "color: red;");
             }
             else{
-               cardDisplayBtns[i]->setStyleSheet("border-image:url(:/Media/cardfrontGray.png); "
+               c->setStyleSheet("border-image:url(:/Media/cardfrontGray.png); "
                                              "color: black;");
             }
 
-            cardDisplayBtns[i]->setText(QString::fromStdString(game->getText(i)));
+            c->setText(QString::fromStdString(card->toString()));
 
         }else
         {
-            if(game->isFlipped(i))
+            if(card->isFlipped())
             {
-                if(game->getCardColor(i)== CardColor::Red){
-                   cardDisplayBtns[i]->setStyleSheet("border-image:url(:/new/Media/Media/cardfront.png); "
+                if(card->getColor()== CardColor::Red){
+                   c->setStyleSheet("border-image:url(:/new/Media/Media/cardfront.png); "
                                                  "color: red;");
                 }
                 else{
-                   cardDisplayBtns[i]->setStyleSheet("border-image:url(:/new/Media/Media/cardfront.png); "
+                   c->setStyleSheet("border-image:url(:/new/Media/Media/cardfront.png); "
                                                  "color: black;");
                 }
 
-                cardDisplayBtns[i]->setText(QString::fromStdString(game->getText(i)));
+                c->setText(QString::fromStdString(card->toString()));
 
             }
             else
             {
-                cardDisplayBtns[i]->setStyleSheet("border-image:url(:/new/Media/Media/cardback.png);");
-                cardDisplayBtns[i]->setText("");
+                c->setStyleSheet("border-image:url(:/new/Media/Media/cardback.png);");
+                c->setText("");
 
             }
-
         }
-
-
-
-
     }
-
-
 }

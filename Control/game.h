@@ -16,6 +16,9 @@ public:
     CardColor getCardColor(int index);
     bool isFlipped(int index);
     bool isMatched(int index);
+
+    CardPtr getCardN(int index);
+    void    selectCardN(int index);
 private:
 
     std::vector<CardPtr> _cards;
