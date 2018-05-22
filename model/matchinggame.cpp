@@ -52,3 +52,21 @@ void MatchingGame::reDealCard(int numberOfCards, Deck& deck)
     }
     score = 200;
 }
+
+bool MatchingGame::testDuplicates()
+{
+    for(int i = 0; i < cards.size(); i++)
+    {
+        if(!cards[i]->isMatched())
+        {
+            for(int j = i+1; j < cards.size(); j++)
+            {
+                if(cards[i]->toString().at(1) == cards[j]->toString().at(1) && !cards[j]->isMatched())
+                {
+                    return true;
+                }
+            }
+        }
+    }
+    return false;
+}

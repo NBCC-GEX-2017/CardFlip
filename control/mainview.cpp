@@ -25,7 +25,7 @@ MainView::MainView(QWidget *parent) :
     font.setPixelSize(40);
     scoreDisplay = new QLabel();
     scoreDisplay->setFont(font);
-    hlmain2->addWidget(scoreDisplay);
+
 
     for(int i = 0; i < 20; i++){
        auto* cButt = new CardQPushButton(i);
@@ -55,9 +55,10 @@ MainView::MainView(QWidget *parent) :
 //    shuffle->setPalette(pal);
 //    shuffle->update();
 
-
-
+    scoreDisplay->setText("Score:"+QString::number(matchGame->getScore()));
+    hlmain2->addWidget(scoreDisplay);
     hlmain2->addWidget(shuffle);
+
     connect (shuffle,
                  &QPushButton::clicked,
                  this,
@@ -65,7 +66,7 @@ MainView::MainView(QWidget *parent) :
         deck->shuffle();
         matchGame->reDealCard(20, *deck);
 
-        scoreDisplay->setText("Score:"+QString::number(matchGame->getScore()));
+
 
         drawView();
 
@@ -98,6 +99,7 @@ void MainView::drawView()
                 cardDisplayBtn[i]->setStyleSheet("border-image:url(:/new/media/Media/cardfrontGray.png); color: red;"); //:/new/media/Media/cardfrontGray.png
            else
                 cardDisplayBtn[i]->setStyleSheet("border-image:url(:/new/media/Media/cardfrontGray.png); color: black;");
+
             cardDisplayBtn[i]->setText( QString::fromStdString(matchGame->getCardAt(i)->toString()));
         }
         else if(card->isFlipped())
@@ -114,8 +116,25 @@ void MainView::drawView()
         {
             cardDisplayBtn[i]->setEnabled(true);
             cardDisplayBtn[i]->setStyleSheet("border-image:url(:/new/media/Media/cardback.png); color: black;");
-            cardDisplayBtn[i]->setText( "");
+            cardDisplayBtn[i]->setText("");
         }
 
+    }
+
+    //this block tests if there are any possible matches left, if not, it flips the remaining cards and disables all buttons except shuffle
+    if(!matchGame->testDuplicates()){
+        for(int i = 0; i < cardDisplayBtn.size(); i++){
+            CardPtr card = matchGame->getCardAt(i);
+            if(!card->isMatched() &&  !card->isFlipped()){
+
+                cardDisplayBtn[i]->setDisabled(true);
+                if(matchGame->getCardAt(i)->getCardColor() == CardColor::Red)
+                    cardDisplayBtn[i]->setStyleSheet("border-image:url(:/new/media/Media/cardfront.png); color: red;");
+               else
+                    cardDisplayBtn[i]->setStyleSheet("border-image:url(:/new/media/Media/cardfront.png); color: black;");
+                cardDisplayBtn[i]->setText( QString::fromStdString(matchGame->getCardAt(i)->toString()));
+
+            }
+        }
     }
 }

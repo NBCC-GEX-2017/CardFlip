@@ -14,6 +14,7 @@ public:
     void flipCardAt(int i);
     void reDealCard(int numberOfCards,Deck& deck);
     int getScore(){return score;}
+    bool testDuplicates();
 private:
     std::vector<CardPtr> cards;
     int score = 200;
