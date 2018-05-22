@@ -73,7 +73,7 @@ MainView::~MainView()
 void MainView::onCardClick()
 {
     auto* cardDisplayBtn = dynamic_cast<CardQPushButton*>(sender());
-    game->getCardAtN(cardDisplayBtn->getIndex());
+    game->setFlip(cardDisplayBtn->getIndex());
 
     drawView();
 }
@@ -81,12 +81,9 @@ void MainView::onCardClick()
 void MainView::drawView()
 {
 
-    for(auto &i : cardDisplayBtns)
+    for(int i = 0; i < cardDisplayBtns.size(); ++i)
     {
-        CardPtr card = game->getCardAtN(i->getIndex());
-
-        if(card->isMatched()){
-            i->setText(QString::fromStdString(card->toString()));
+        if(game->isFlipped(i)){
             if(game->getCardColor(i) == CardColor::Red){
                 cardDisplayBtns[i]->setStyleSheet("border-image:url(:/media/Media/cardfront.png); color: red;");
             }
@@ -100,6 +97,5 @@ void MainView::drawView()
             cardDisplayBtns[i]->setText("");
         }
     }
-
 
 }
