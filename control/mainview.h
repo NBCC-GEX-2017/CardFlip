@@ -7,6 +7,7 @@
 #include <memory>
 #include <vector>
 #include "view/cardqpushbutton.h"
+#include<QLabel>
 
 
 namespace Ui {
@@ -30,6 +31,7 @@ private:
     std::vector <QPushButton*> cardDisplayBtn;
     QFont font;
     std::unique_ptr<MatchingGame> matchGame;
+    QLabel* scoreDisplay;
 };
 
 #endif // MAINVIEW_H

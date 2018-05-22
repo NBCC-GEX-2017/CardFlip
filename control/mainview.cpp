@@ -23,6 +23,10 @@ MainView::MainView(QWidget *parent) :
     vlmain->addLayout(gridmain);
     vlmain->addLayout(hlmain2);
     font.setPixelSize(40);
+    scoreDisplay = new QLabel();
+    scoreDisplay->setFont(font);
+    hlmain2->addWidget(scoreDisplay);
+
     for(int i = 0; i < 20; i++){
        auto* cButt = new CardQPushButton(i);
        cardDisplayBtn.push_back(cButt);
@@ -60,6 +64,9 @@ MainView::MainView(QWidget *parent) :
              [this](){
         deck->shuffle();
         matchGame->reDealCard(20, *deck);
+
+        scoreDisplay->setText("Score:"+QString::number(matchGame->getScore()));
+
         drawView();
 
     });
@@ -80,7 +87,7 @@ void MainView::onCardClick()
 
 void MainView::drawView()
 {
-
+    scoreDisplay->setText("Score:" + QString::number(matchGame->getScore()));
     for(int i = 0; i < cardDisplayBtn.size(); i++)
     {
         CardPtr card = matchGame->getCardAt(i);

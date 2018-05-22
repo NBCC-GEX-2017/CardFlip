@@ -32,11 +32,13 @@ void MatchingGame::flipCardAt(int i)
             card->get()->flip();
             card->get()->setMatched(true);
             cards[i]->setMatched(true);
+            score += 5;
         }
         else
         {
             card->get()->flip();
             cards[i]->flip();
+            score--;
         }
     }
 }
@@ -48,4 +50,5 @@ void MatchingGame::reDealCard(int numberOfCards, Deck& deck)
     {
         cards.push_back(deck.drawCard());
     }
+    score = 200;
 }
