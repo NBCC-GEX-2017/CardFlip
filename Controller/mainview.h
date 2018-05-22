@@ -38,6 +38,9 @@ private:
     int currentCard{0};
     void drawView();
     QLabel* _pointsLabel;
+    QLabel* _highScore;
+    QLabel* _message;
+    QLabel* _availableMoves;
 };
 
 #endif // MAINVIEW_H

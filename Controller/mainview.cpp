@@ -9,7 +9,7 @@ MainView::MainView(QWidget *parent) :
     ui(new Ui::MainView)
 {
     ui->setupUi(this);
-
+    srand(time(0));
     _deck = std::unique_ptr<Deck>(new Deck());
     _deck->shuffle();
 
@@ -21,9 +21,10 @@ MainView::MainView(QWidget *parent) :
 
     auto* glCard = new QGridLayout();
     auto* hlShuffle = new QHBoxLayout();
-
+    auto* hlMessage = new QHBoxLayout();
     vlmain->addLayout(glCard);
     vlmain->addLayout(hlShuffle);
+    vlmain->addLayout(hlMessage);
 
     for(int i = 0; i < CARD_COLS*CARD_ROWS; i++){
         auto cardBtn = new CardQPushButton(i);
@@ -48,12 +49,39 @@ MainView::MainView(QWidget *parent) :
     connect(_shuffleButton,
             &QPushButton::clicked,
             this,
-            [this](){_deck->shuffle();drawView();});
+            &MainView::shuffle);
 
+    QFont font;
+    font.setPixelSize(20);
     _pointsLabel = new QLabel;
     _pointsLabel->setText(QStringLiteral("Points: %1").arg(game->getPoints()));
+    _pointsLabel->setStyleSheet("color:white;");
+    _pointsLabel->setFont(font);
 
     hlShuffle->addWidget(_pointsLabel);
+    hlShuffle->addStretch(1);
+
+    _availableMoves = new QLabel;
+    _availableMoves->setFont(font);
+    _availableMoves->setText(QStringLiteral("Available moves: %1").arg(game->countAvailableMoves()));
+    _availableMoves->setStyleSheet("color: white;");
+
+    hlShuffle->addWidget(_availableMoves);
+    hlShuffle->addStretch(1);
+
+    _highScore = new QLabel;
+    _highScore->setFont(font);
+    _highScore->setText(QStringLiteral("HighScore: %1").arg(game->getHighScore()));
+    _highScore->setStyleSheet("color:blue;");
+
+    hlShuffle->addWidget(_highScore);
+
+    _message = new QLabel;
+    _message->setText("");
+    _message->setFont(font);
+    hlMessage->addStretch(1);
+    hlMessage->addWidget(_message);
+    hlMessage->addStretch(1);
 }
 
 MainView::~MainView()
@@ -64,54 +92,56 @@ MainView::~MainView()
 void MainView::changeCard()
 {
     auto* btn = dynamic_cast<CardQPushButton*>(sender());
-    bool match = false;
-    bool hasFlipped = false;
-    for(int i =0; i < _cardBtn.size(); i++){
-        if(i != btn->getIndex()){
-            if(game->isFlipped(i) && !game->isMatched(i)) {
-                hasFlipped = true;
-                if(game->getSuit(i) == game->getSuit(btn->getIndex()))
-                {
-                    game->setMatched(i);
-                    game->setMatched(btn->getIndex());
-                    game->addPoints(3);
-                    match = true;
-                }
-                else if(game->getFace(i) == game->getFace(btn->getIndex()))
-                {
-                    game->setMatched(i);
-                    game->setMatched(btn->getIndex());
-                    game->addPoints(5);
-                    match = true;
-                }
-                game->flipCard(i);
-            }
-        }
-    }
-    if(!match && hasFlipped){
-        game->addPoints(-1);
-    }
-    game->flipCard(btn->getIndex());
+    game->clickCard(btn->getIndex());
     drawView();
 }
 
 void MainView::shuffle()
 {
+   game->reset();
+   _deck = nullptr;
+   _deck = std::unique_ptr<Deck>(new Deck());
    _deck->shuffle();
    for(int i =0; i < _cardBtn.size(); i++){
-        game->setCard(i, _deck->drawCard());
+        game->setCard(_deck->drawCard());
    }
     drawView();
 }
 
 void MainView::drawView()
 {
+    _message->setText("");
+    _message->setStyleSheet(QStringLiteral("background-color:rgb(23,101,17)"));
+    _pointsLabel->setText(QStringLiteral("Points: %1").arg(game->getPoints()));
+    _highScore->setText(QStringLiteral("HighScore: %1").arg(game->getHighScore()));
+    _availableMoves->setText(QStringLiteral("Available moves: %1").arg(game->countAvailableMoves()));
+    _availableMoves->setStyleSheet("color: white;");
+    if(game->countAvailableMoves() < 7){
+        _availableMoves->setStyleSheet("color: yellow;");
+    }
+    if(game->countAvailableMoves() < 3){
+        _availableMoves->setStyleSheet("color: red;");
+    }
+
+    if(!game->moveAvailable()){
+        _message->setText("No more available moves");
+        _message->setStyleSheet("background-color: yellow; color:red;");
+        game->flipAll();
+    }
     for(int i =0; i < _cardBtn.size(); i++){
         if(game->isFlipped(i) || game->isMatched(i)){
             if(game->getCardColor(i) == CardColor::Red){
-                _cardBtn[i]->setStyleSheet(QStringLiteral("border-image:url(:/media/Media/cardfront.png);color:red;"));
+                if(game->isMatched(i)){
+                    _cardBtn[i]->setStyleSheet(QStringLiteral("border-image:url(:/media/Media/cardfrontGray.png);color:red;"));
+                }else{
+                    _cardBtn[i]->setStyleSheet(QStringLiteral("border-image:url(:/media/Media/cardfront.png);color:red;"));
+                }
             }else{
-                _cardBtn[i]->setStyleSheet(QStringLiteral("border-image:url(:/media/Media/cardfront.png);color:black;"));
+                if(game->isMatched(i)){
+                    _cardBtn[i]->setStyleSheet(QStringLiteral("border-image:url(:/media/Media/cardfrontGray.png);color:black;"));
+                }else{
+                    _cardBtn[i]->setStyleSheet(QStringLiteral("border-image:url(:/media/Media/cardfront.png);color:black;"));
+                }
             }
             _cardBtn[i]->setText(QString::fromStdString(game->getText(i)));
         }
@@ -121,6 +151,4 @@ void MainView::drawView()
             _cardBtn[i]->setText("");
         }
     }
-    _pointsLabel->setText(QStringLiteral("Points: %1").arg(game->getPoints()));
-
 }
