@@ -33,7 +33,7 @@ void MatchingGame::selectCard(int index)
     std::for_each(cards.begin(),cards.end(),[this, index](CardPtr c){
         if(c->isFlipped()&&c!=cards.at(index))
         {
-            if((c->suit == cards.at(index)->suit) && !c->isMathced()){
+            if(((c->suit == cards.at(index)->suit)||(c->face == cards.at(index)->face)) && !c->isMathced()){
                 c->setMatched(true);
                 cards.at(index)->setMatched(true);
                 //score point
