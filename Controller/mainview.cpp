@@ -1,26 +1,31 @@
 #include "mainview.h"
 #include "ui_mainview.h"
-#include <QPushbutton>
-#include <QVboxLayout>
-#include <QHboxLayout>
+#include <QPushButton>
+#include <QVBoxLayout>
+#include <QHBoxLayout>
+#include <QGridLayout>
 #include <QString>
 #include <QFont>
-
+#include "View/cardqpushbutton.h"
+#include "Model/game.h"
+const int cardRows=4;
+const int cardCols=8;
 MainView::MainView(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainView)
 {
     ui->setupUi(this);
 
-    // set up model Deck deck; deck.shuffle
+    deck = std::unique_ptr<Deck>(new Deck());
+    deck->shuffle();
 
-    // set up layouts
-    //  central widget -> vlMain -> hlCard
-    //                           -> hlShuffle
     auto vlmain = new QVBoxLayout(ui->centralWidget);
 
     auto hlcard = new QHBoxLayout();
     vlmain->addLayout(hlcard);
+
+    auto glcard = new QGridLayout();
+    vlmain->addLayout(glcard);
 
     auto hlshuffle = new QHBoxLayout();
     vlmain->addLayout(hlshuffle);
@@ -34,20 +39,25 @@ MainView::MainView(QWidget *parent) :
     vlmain->addStretch(1);
     ui->centralWidget->setStyleSheet(QStringLiteral("background-color:darkolivegreen"));
 
+
     // set up cardButton
     QFont font;
     font.setPixelSize(40);
 
-    auto* card = new QPushButton;
-    card->setFont(font);
-    card->setMinimumSize(QSize(128,192));
-    card->setMaximumSize(QSize(128,192));
-    card->setText("");
-    card->setStyleSheet("border-image:url(:/media/Media/cardback.png)");
-
-    hlcard->addWidget(card);
-    hlcard->addStretch(1);
-
+    for(int i = 0; i < cardCols * cardRows; ++i){
+        auto btn = new CardQPushButton(i);
+        btn->setFont(font);
+        btn->setMinimumSize(QSize(128,192));
+        btn->setMaximumSize(QSize(128,192));
+        btn->setText("");
+        btn->setStyleSheet("border-image:url(:/media/Media/cardback.png)");
+        glcard->addWidget(btn, i / cardCols, i % cardRows);
+        cardButtons.push_back(btn);
+        connect(btn,
+                &QPushButton::clicked,
+                this,
+                &MainView::onCardClick);
+}
     // set up shuffle button
 
     auto shuffleButton = new QPushButton();
@@ -59,6 +69,10 @@ MainView::MainView(QWidget *parent) :
     hlshuffle->addStretch(1);
     hlshuffle->addWidget(shuffleButton);
 
+    connect(shuffleButton,
+            &QPushButton::clicked,
+            this,
+            [this](){deck->shuffle();drawView();});
     // add some more buttons
     for (int i=0;i<5;++i)
     {
@@ -92,4 +106,22 @@ MainView::MainView(QWidget *parent) :
 MainView::~MainView()
 {
     delete ui;
+}
+
+void MainView::onCardClick()
+{
+    //deck->nextCard();
+    drawView();
+}
+
+void MainView::drawView()
+{
+    for(auto& c : cardButtons){
+        auto game = new QPushButton;
+        if(game->getCard(c->getIndex()).isFlipped()){
+
+        }else{
+
+        }
+    }
 }

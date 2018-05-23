@@ -25,10 +25,17 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 SOURCES += \
         main.cpp \
-        Controller/mainview.cpp
+        Controller/mainview.cpp \
+    Model/Deck.cpp \
+    Model/Card.cpp \
+    Model/game.cpp
 
 HEADERS += \
-        Controller/mainview.h
+        Controller/mainview.h \
+    Model/Deck.h \
+    Model/Card.h \
+    View/cardqpushbutton.h \
+    Model/game.h
 
 FORMS += \
         View/mainview.ui
