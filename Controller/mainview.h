@@ -2,20 +2,18 @@
 #define MAINVIEW_H
 
 #include <QMainWindow>
-#include "Model/Deck.h"
 #include <memory>
 #include <vector>
-#include "Model/matchinggame.h"
 
 
-class CardQPushButton;
+class MatchingGame;
+class Deck;
 
 namespace Ui {
 class MainView;
 }
 
-class QPushButton;
-
+class CardQPushButton;
 
 class MainView : public QMainWindow
 {
@@ -30,15 +28,16 @@ private slots:
 
 private:
     void drawView();
+
+
 private:
     Ui::MainView *ui;
 
     std::unique_ptr<Deck> deck;
-    //QPushButton* cardDisplayBtn;//change to vector deal 32 card and change a layout to grid
-    std::vector<CardQPushButton*> cardDisplayBtns;
-    //MatchingGame* game;
-    std::unique_ptr<MatchingGame>game;
-    //MatchingGame* game;
+    std::unique_ptr<MatchingGame> game;
+
+    std::vector<CardQPushButton*> cardButtons;
+
 };
 
 #endif // MAINVIEW_H

@@ -1,13 +1,19 @@
-#include "Controller/mainview.h"
+#include "mainview.h"
 #include "ui_mainview.h"
 #include <QPushButton>
 #include <QVBoxLayout>
 #include <QHBoxLayout>
+#include <QGridLayout>
 #include <QString>
 #include <QFont>
-#include <QGridLayout>
 #include "View/cardqpushbutton.h"
 #include "Model/matchinggame.h"
+#include "Model/Deck.h"
+#include <QDebug>
+
+
+const int CARD_ROWS = 3;
+const int CARD_COLS = 8;
 
 MainView::MainView(QWidget *parent) :
     QMainWindow(parent),
@@ -17,58 +23,65 @@ MainView::MainView(QWidget *parent) :
 
     deck = std::unique_ptr<Deck>(new Deck());
     deck->shuffle();
-    game = std::unique_ptr<MatchingGame>(new MatchingGame(52,*deck));
-    //game = new MatchingGame(52,deck);
-    //set up model Deck deck; Deck.shuffle();
 
-    // set up layouts
-    // central widget -> vlMain -> hlCard
-    //                          -> hlShuffle
-    ui->centralWidget->setStyleSheet(QStringLiteral("background-color:rgb(23,101,17)"));
-    auto vlmain = new QVBoxLayout(ui->centralWidget);//QVBoxLayout* vlmain
-    //auto hlcard = new QHBoxLayout();
+    game = std::unique_ptr<MatchingGame>(new MatchingGame(CARD_ROWS * CARD_COLS, *deck));
+
+    auto vlmain = new QVBoxLayout(ui->centralWidget);
+
     auto glcard = new QGridLayout();
     vlmain->addLayout(glcard);
+
     auto hlshuffle = new QHBoxLayout();
     vlmain->addLayout(hlshuffle);
 
+    vlmain->addStretch(1);
+    ui->centralWidget->setStyleSheet(QStringLiteral("background-color:darkolivegreen"));
+
     // set up cardButton
     QFont font;
-    //font.setPixelSize(40);
-    font.setPixelSize(20);
+    font.setPixelSize(40);
 
-    for(int i = 0; i < 32; i++)
+    for (int i=0;i< CARD_COLS * CARD_ROWS;++i)
     {
-        auto btn= new CardQPushButton(i);
-        //auto* cardDisplayBtn= new QPushButton;
+        auto btn = new CardQPushButton(i);
         btn->setFont(font);
-        btn->setMinimumSize(QSize(32,48));
-        //btn->setMinimumSize(QSize(128,192));
-        btn->setMaximumSize(QSize(32,48));
+        btn->setMinimumSize(QSize(128,192));
+        btn->setMaximumSize(QSize(128,192));
         btn->setText("");
         btn->setStyleSheet("border-image:url(:/media/Media/cardback.png)");
-        glcard->addWidget(btn, i/8, i%8);
+        glcard->addWidget(btn, i / CARD_COLS, i % CARD_COLS);
+        cardButtons.push_back(btn);
+
         connect(btn,
                 &CardQPushButton::clicked,
                 this,
                 &MainView::onCardClick);
 
-        //cardDisplayBtns->push_back(cardDisplayBtn);
-        cardDisplayBtns.push_back(btn);
-
     }
 
+
+
+
+
     // set up shuffle button
-    auto* shufflebtn = new QPushButton;
-    shufflebtn->setText("SHUFFLE");
-    shufflebtn->setMinimumSize(QSize(128,25));
-    shufflebtn->setMaximumSize(QSize(128,25));
-    shufflebtn->setStyleSheet(QStringLiteral("background-color:lightsteelblue"));
-    hlshuffle->addWidget(shufflebtn);
-    connect(shufflebtn,
-                &QPushButton::clicked,
-                this,
-                [this](){deck->shuffle(); drawView();});
+
+    auto shuffleButton = new QPushButton();
+    shuffleButton->setText("New Game");
+    shuffleButton->setMinimumSize(QSize(128,20));
+    shuffleButton->setMaximumSize(QSize(128,20));
+    shuffleButton->setStyleSheet(QStringLiteral("background-color:aliceblue"));
+
+    hlshuffle->addStretch(1);
+    hlshuffle->addWidget(shuffleButton);
+
+    connect(shuffleButton,
+            &QPushButton::clicked,
+            this,
+            [this](){
+        deck->shuffle();
+        game = std::unique_ptr<MatchingGame>(new MatchingGame(CARD_ROWS * CARD_COLS, *deck));
+        drawView();
+    });
 }
 
 MainView::~MainView()
@@ -78,63 +91,44 @@ MainView::~MainView()
 
 void MainView::onCardClick()
 {
-    //deck->nextCard();
-    auto tmp = sender();
-
-    CardQPushButton* cardIndex = dynamic_cast<CardQPushButton*>(tmp);
-    game->selectCard(cardIndex->getIndex());
-    //ask qpushbutton for its index
-    //tell model card @index changed
-    //tmp->getIndex();
-    //tmp->flip();
-
+    auto fromButton = sender();
+    CardQPushButton* fromCardButton = dynamic_cast<CardQPushButton*>(fromButton);
+    game->selectCardN(fromCardButton->getIndex());
     drawView();
 }
+
 void MainView::drawView()
 {
-    for(auto& c : cardDisplayBtns)
+
+    for (auto& c : cardButtons)
     {
-        CardPtr tmp = game->getCard(c->getIndex());
-        //if(game->getCard(c->getIndex()).isFlipped())
-        if(tmp->isFlipped())
+        CardPtr card = game->getCardN(c->getIndex());
+        if(card->isMatched())
         {
-            c->setText(QString::fromStdString(tmp->toString()));
-            if(tmp->getColor()==CardColor::Red)
-            //if(game->getCard(c->getIndex())->getColor()==CardColor::Red)
-            {
-                 c->setStyleSheet("border-image:url(:/media/Media/cardfront.png); color:red;");
-            }
+            c->setText(QString::fromStdString(card->toString()));
+            if (card->getColor() == CardColor::Red)
+                c->setStyleSheet("border-image:url(:/media/Media/cardfrontGray.png); color: red;");
             else
-            {
-                c->setStyleSheet("border-image:url(:/media/Media/cardfront.png); color:black;");
-            }
+                c->setStyleSheet("border-image:url(:/media/Media/cardfrontGray.png); color: black;");
         }
-            //c->setText(QString::fromStdString(deck->topCardToString()));
+        else{
+        if (card->isFlipped())
+        {
+            c->setText(QString::fromStdString(card->toString()));
+            if (card->getColor() == CardColor::Red)
+                c->setStyleSheet("border-image:url(:/media/Media/cardfront.png); color: red;");
+            else
+                c->setStyleSheet("border-image:url(:/media/Media/cardfront.png); color: black;");
+
+
+        }
         else
         {
-            c->setStyleSheet("border-image:url(:/media/Media/cardback.png)");
             c->setText("");
+            c->setStyleSheet("border-image:url(:/media/Media/cardback.png);");
+        }
         }
     }
-    //for(int i=0; i<cardDisplayBtns.size(); i++)
-    //{
-    //    if(deck->isFlipped())
-    //    {
-    //        if(deck->getCardColor()==CardColor::Red)
-    //        {
-    //             cardDisplayBtns[i]->setStyleSheet("border-image:url(:/media/Media/cardfront.png); color:red;");
-    //        }
-    //        else
-    //        {
-    //            cardDisplayBtns[i]->setStyleSheet("border-image:url(:/media/Media/cardfront.png); color:black;");
-    //        }
-    //        cardDisplayBtns[i]->setText(QString::fromStdString(deck->topCardToString()));
-    //    }
-    //    else
-    //    {
-    //        cardDisplayBtns[i]->setStyleSheet("border-image:url(:/media/Media/cardback.png)");
-    //        cardDisplayBtns[i]->setText("");
-    //    }
-    //}
-
 }
+
+
