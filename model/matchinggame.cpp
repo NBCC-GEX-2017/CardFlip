@@ -23,11 +23,16 @@ void MatchingGame::flipCardAt(int i)
     });
 
     if(card == cards.end())
+    {
         cards[i]->flip();
+        score--;
+    }
     else{
-        char char1 = card->get()->toString().at(1);
-        char char2 = cards[i]->toString().at(1);
-        if(char1 == char2)
+        if(card->get()->suit == cards[i]->suit && card->get()->face == cards[i]->face){
+            cards[i]->flip();
+         }
+        else
+        if(card->get()->face == cards[i]->face)
         {
             card->get()->flip();
             card->get()->setMatched(true);
@@ -35,10 +40,17 @@ void MatchingGame::flipCardAt(int i)
             score += 5;
         }
         else
+        if(card->get()->suit == cards[i]->suit){
+            card->get()->flip();
+            card->get()->setMatched(true);
+            cards[i]->setMatched(true);
+            score += 1;
+        }
+        else
         {
             card->get()->flip();
             cards[i]->flip();
-            score--;
+
         }
     }
 }
@@ -53,6 +65,7 @@ void MatchingGame::reDealCard(int numberOfCards, Deck& deck)
     score = 200;
 }
 
+//function that returns true or false based on if there is a match possible in game
 bool MatchingGame::testDuplicates()
 {
     for(int i = 0; i < cards.size(); i++)
@@ -61,7 +74,7 @@ bool MatchingGame::testDuplicates()
         {
             for(int j = i+1; j < cards.size(); j++)
             {
-                if(cards[i]->toString().at(1) == cards[j]->toString().at(1) && !cards[j]->isMatched())
+                if(cards[i]->face == cards[j]->face && !cards[j]->isMatched() || cards[i]->suit == cards[j]->suit && !cards[j]->isMatched())
                 {
                     return true;
                 }

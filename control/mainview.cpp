@@ -104,7 +104,7 @@ void MainView::drawView()
         }
         else if(card->isFlipped())
         {
-            cardDisplayBtn[i]->setDisabled(true);
+            //cardDisplayBtn[i]->setDisabled(true);
             if(matchGame->getCardAt(i)->getCardColor() == CardColor::Red)
                 cardDisplayBtn[i]->setStyleSheet("border-image:url(:/new/media/Media/cardfront.png); color: red;");
            else
