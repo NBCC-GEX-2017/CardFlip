@@ -72,7 +72,10 @@ MainView::MainView(QWidget *parent) :
     connect(shuffleButton,
             &QPushButton::clicked,
             this,
-            [this](){deck->shuffle();drawView();});
+            [this](){
+        deck->shuffle();
+        //game = std::unique_ptr<Game>(new Game(CARD_ROWS))
+        drawView();});
 
 }
 

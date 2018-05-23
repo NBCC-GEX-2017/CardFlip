@@ -29,7 +29,7 @@ public:
     bool isMatched() const { return _matched; }
     bool isFlipped() const { return _flipped; }
 
-    void flip();
+    void flip(bool flip=true);
     void setMatched(bool matched);
 
     const Suit suit;

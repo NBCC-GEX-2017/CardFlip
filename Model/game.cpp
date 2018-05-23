@@ -1,7 +1,7 @@
 #include "game.h"
 #include <algorithm>
 
-Game::Game(int numberOfCards, Deck& deck)
+Game::Game(int numberOfCards, Deck& deck) : score(0)
 {
     cards.reserve(numberOfCards);
 
@@ -13,16 +13,6 @@ Game::Game(int numberOfCards, Deck& deck)
 
 void Game::selectCardI(int index)
 {
-//    std::for_each(cards.begin(), cards.end(), [](CardPtr c) {
-//        if (c->isFlipped())
-//            c->flip();
-//    });
-//
-//    if (index < cards.size())
-//    {
-//        cards[index]->flip();
-//    }
-
     // card(index)
         // isFlipped() -> flip and return
         // isMatched() -> return
@@ -39,11 +29,40 @@ void Game::selectCardI(int index)
                     // deduct some points
                     // flip both cards
 
-    std::vector<CardPtr> card = std::find_if(cards.begin(),
-                                             cards.end(),
-                                             [](CardPtr c) { return c->isFlipped();});
+    auto newCard = cards.at(index);
 
+    if (newCard->isMatched())
+        return;
+    if (newCard->isFlipped())
+    {
+        newCard->flip(false);
+        return;
+    }
+    auto card = std::find_if(cards.begin(),
+                             cards.end(),
+                             [](CardPtr c) { return c->isFlipped();});
 
+    if (card == cards.end())
+    {
+        newCard->flip();
+        return;
+    }
+    else
+    {
+        auto cardSelected = *card;
+        if (cardSelected->suit == newCard->suit || cardSelected->face == newCard->face)
+        {
+            cardSelected->setMatched(true);
+            cardSelected->flip(false);
+            newCard->setMatched(true);
+            newCard->flip(false);
+        }
+        else
+        {
+            cardSelected->flip(false);
+            newCard->flip(true);
+        }
+    }
 
 
 

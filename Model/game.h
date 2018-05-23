@@ -15,6 +15,7 @@ public:
 
 private:
     std::vector<CardPtr> cards;
+    int score;
 };
 
 #endif // GAME_H

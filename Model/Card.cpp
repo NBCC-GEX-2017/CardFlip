@@ -21,7 +21,7 @@ CardColor Card::getColor() const
         return CardColor::Black;
 }
 
-void Card::flip()
+void Card::flip(bool)
 {
     _flipped = _flipped ? false : true;
 }
