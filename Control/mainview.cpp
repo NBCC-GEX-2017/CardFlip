@@ -19,7 +19,10 @@ MainView::MainView(QWidget *parent) :
     deck = std::unique_ptr<Deck>(new Deck);
     deck->shuffle();
 
+
+    //
     game = new Game();
+    //game = std::unique_ptr Game(new )
 
     //vertical layout
     auto vlmain = new QVBoxLayout(ui->centralWidget);
@@ -65,7 +68,7 @@ MainView::MainView(QWidget *parent) :
 
     // set up shuffleButton
 
-   auto shuffleButton = new QPushButton();
+   auto* shuffleButton = new QPushButton();
    shuffleLayout->addWidget(shuffleButton);   
    shuffleButton->setText("Shuffle");
    shuffleButton->setMinimumSize(QSize(128,20));
@@ -79,11 +82,13 @@ MainView::MainView(QWidget *parent) :
         deck->shuffle();
         drawView();});
 
-    auto scoreLabel = new QLabel();
-
+    ///////////////////
+    scoreLabel = new QLabel();
     shuffleLayout->addWidget(scoreLabel);
-    scoreLabel->setText("SCORE");
+    scoreLabel->setMaximumWidth(100);
+    scoreLabel->setText("0");
     scoreLabel->setStyleSheet(QStringLiteral("background-color:white"));
+
 }
 
 MainView::~MainView()
@@ -98,13 +103,15 @@ void MainView::onCardClick(){
     game->selectCardN(btn->getIndex());
 
 
-    //scoreLabel->setText(QString::number(game->getScore()));
+    scoreLabel->setText(QString::number(game->getScore()));
+
     drawView();
 
 
 }
 
 void MainView::drawView(){
+
 
     for(auto c : cardDisplayBtns)
     {

@@ -8,6 +8,7 @@
 #include <memory>
 #include <QPushButton>
 #include "Model/game.h"
+#include <QLabel>
 
 
 namespace Ui {
@@ -36,9 +37,14 @@ private:
     Ui::MainView *ui;
 
     std::unique_ptr<Deck> deck;
-    /////////////////////////
+
+
+    QLabel* scoreLabel;
+
     std::vector<CardQPushButton*> cardDisplayBtns;
  //change to a vector. to deal 32 cards in a grid...refer to demo03 (tic tac toe)
+
+
     Game *game;
 
 

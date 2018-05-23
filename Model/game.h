@@ -14,8 +14,8 @@ public:
     void setCardAtN(CardPtr card);
     std::string getText(int index);
     CardColor getCardColor(int index);
-    bool isFlipped(int index);
-    bool isMatched(int index);
+    //bool isFlipped(int index);
+    //bool isMatched(int index);
 
     CardPtr getCardN(int index);
     void    selectCardN(int index);
