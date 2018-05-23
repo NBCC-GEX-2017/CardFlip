@@ -23,7 +23,7 @@ enum class Face {ACE, TWO, THREE, FOUR, FIVE, SIX, SEVEN, EIGHT, NINE, TEN, JACK
 class Card
 {
 public: //
-//    Card(Face f, Suit s) : suit(s), face(f) {}
+
     Card(Face f, Suit s) : suit(s), face(f), _matched(false), _flipped(false) {}
     std::string toString() const;
 

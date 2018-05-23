@@ -9,7 +9,7 @@
 #include "View/cardqpushbutton.h"
 
 const int CARD_COLS = 8;
-const int CARD_ROW = 4;
+const int CARD_ROWS = 4;
 
 
 MainView::MainView(QWidget *parent) :
@@ -18,17 +18,18 @@ MainView::MainView(QWidget *parent) :
 {
     ui->setupUi(this);
 
-    matchingGame = new MatchingGame();
+//    matchingGame = new MatchingGame();
 
     deck = std::unique_ptr<Deck>(new Deck());  //
     deck->shuffle();                           //
 
+    matchingGame = std::unique_ptr<MatchingGame>(new MatchingGame(CARD_ROWS * CARD_COLS, *deck));
 
     auto* grid = new QGridLayout(ui->centralWidget);
     QFont font;
     font.setPixelSize(40);
 
-    for(int i=0;i<(CARD_COLS * CARD_ROW);i++){
+    for(int i=0;i<(CARD_COLS * CARD_ROWS);i++){
         auto buttons = new CardQPushButton(i);
         //QPushButton* buttons = new QPushButton;
         buttons->setFont(font);
@@ -71,10 +72,10 @@ MainView::~MainView()
 
 
 void MainView::onCardClick(){
-//    deck->nextCard();
+    auto fromButton = sender();
+    CardQPushButton* fromCardButton = dynamic_cast<CardQPushButton*>(fromButton);
+    matchingGame->selectCardN(fromCardButton->getIndex());
 
-    auto* tmp = dynamic_cast<CardQPushButton*>(sender());
-    matchingGame->flipCard(tmp->getIndex());
     drawView();
 }
 
@@ -106,44 +107,5 @@ void MainView::drawView() {
     }
 
 
-//    for (int i=0;i<32;i++){
-//         CardPtr card = matchingGame->getSquareN(btn[i]->getIndex());
-//         if(card->isMatched()){
-//             btn[i]->setText(QString::fromStdString(card->toString()));
-//             if(card->getColor() == CardColor::Red){
-//                 btn[i]->setStyleSheet("border-image:url(:/media/Media/cardfrontGray.png); color:red;");
-//             }else{
-//                 btn[i]->setStyleSheet("border-image:url(:/media/Media/cardfrontGray.png); color:black;");
-//             }
-
-//         }else{
-//             if(card->isFlipped()){
-//                 if(card->getColor() == CardColor::Red ){
-//                     btn[i]->setStyleSheet("border-image:url(:/media/Media/cardfront.png); color:red;");
-//                 }else {
-//                     btn[i]->setStyleSheet("border-image:url(:/media/Media/cardfront.png); color:black;");
-//                 }
-//                 btn[i]->setText(QString::fromStdString(card->toString()));
-//             } else {
-//                 btn[i]->setStyleSheet("border-image:url(:/media/Media/cardback.png)");
-//                 btn[i]->setText("");
-//             }
-//         }
-//    }
-
-
-//    for (int i=0;i<32;i++){
-//        if(deck->isFlipped()){
-//            if(deck->getCardColor() == CardColor::Red){
-//                btn[i]->setStyleSheet("border-image:url(:/media/Media/cardfront.png); color:red;");
-//            }else {
-//                btn[i]->setStyleSheet("border-image:url(:/media/Media/cardfront.png); color:black;");
-//            }
-//            btn[i]->setText(QString::fromStdString(deck->topCardToString()));
-//        } else{
-//            btn[i]->setStyleSheet("border-image:url(:/media/Media/cardback.png)");
-//            btn[i]->setText("");
-//        }
-//    }
 
 }

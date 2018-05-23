@@ -14,6 +14,7 @@ class MainView;
 
 //class QPushButton;
 class CardQPushButton;
+class MatchingGame;
 
 class MainView : public QMainWindow
 {
@@ -34,13 +35,9 @@ private:
     Ui::MainView *ui;
 
     std::unique_ptr<Deck> deck;
+    std::unique_ptr<MatchingGame> matchingGame;
 
-    MatchingGame* matchingGame;
-
-    //std::vector<QPushButton*> btn;
     std::vector<CardQPushButton*> btn;
-    //QPushButton* cardDisplayBtn;
-    //deal out 32cards and buttons and grid view
 };
 
 #endif // MAINVIEW_H

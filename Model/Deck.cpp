@@ -22,7 +22,7 @@ Deck::Deck()
     
 //    _isFlipped = false;
 //    _topOfDeck = static_cast<int>(_deck.size()-1);
-    _topOfDeck = _deck.size()-1;
+    _topOfDeck = (int) _deck.size()-1;
 }
 
 //CardColor Deck::getCardColor()
@@ -50,25 +50,6 @@ CardPtr Deck::drawCard()
 
 }
 
-//void Deck::sort()
-//{
-//    std::sort(_deck.begin(), _deck.end(),  [](CardPtr lhs, CardPtr rhs) { return (*lhs < *rhs);});
-//    _isFlipped = false;
-//     _topOfDeck = static_cast<int>(_deck.size()-1);
-//}
-
-//void Deck::nextCard()
-//{
-//    if (_isFlipped)
-//         _topOfDeck = _topOfDeck ? _topOfDeck - 1 : 0;
-//    else
-//        _isFlipped = true;
-//}
-
-//std::string Deck::topCardToString() const
-//{
-//    return _deck[_topOfDeck]->toString();
-//}
 
 void Deck::shuffle()
 {
@@ -83,7 +64,6 @@ void Deck::shuffle()
     {
         swap(_deck[i],  _deck[i + (rand() % (_deck.size()-i))]);
     }
-//    _topOfDeck = static_cast<int>(_deck.size()-1);
     _topOfDeck = _deck.size()-1;
-//    _isFlipped = false;
+
 }

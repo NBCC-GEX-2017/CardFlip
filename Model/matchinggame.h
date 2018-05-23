@@ -8,10 +8,13 @@
 class MatchingGame
 {
 public:
-    MatchingGame();
+    MatchingGame(int numberOfCards, Deck& deck);
 
     CardPtr getSquareN(int i);          //
-    void flipCard(int i);               //
+    void selectCardN(int index);         //
+    Suit getSuit(int i){return cards[i]->suit;}  //
+    Face getFace(int i){return cards[i]->face;}  //
+
 
 private:
     std::vector<CardPtr> cards;

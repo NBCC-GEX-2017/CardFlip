@@ -21,22 +21,17 @@ class Deck
 {
 public:
     Deck();
-    
-//    CardColor getCardColor();
+
     bool isEmpty() const;
-//    void nextCard();
 
     CardPtr drawCard();
 
-//    std::string topCardToString() const;
+
     void shuffle();
-//    void sort();
-//    bool isFlipped() const {return _isFlipped;}
-    
+
 private:
     std::vector<CardPtr> _deck;
     int _topOfDeck;
-//    bool _isFlipped;
 };
 
 
