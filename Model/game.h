@@ -19,9 +19,11 @@ public:
 
     CardPtr getCardN(int index);
     void    selectCardN(int index);
+    int getScore();
 private:
 
     std::vector<CardPtr> _cards;
+    int score = 0;
 };
 
 using CardPtr = std::shared_ptr<Card>;

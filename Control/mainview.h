@@ -7,7 +7,7 @@
 #include <vector>
 #include <memory>
 #include <QPushButton>
-#include "Control/game.h"
+#include "Model/game.h"
 
 
 namespace Ui {

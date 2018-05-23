@@ -7,7 +7,7 @@
 #include <QString>
 #include <QFont>
 #include <View/cardqpushbutton.h>
-
+#include <QLabel>
 
 
 MainView::MainView(QWidget *parent) :
@@ -79,6 +79,11 @@ MainView::MainView(QWidget *parent) :
         deck->shuffle();
         drawView();});
 
+    auto scoreLabel = new QLabel();
+
+    shuffleLayout->addWidget(scoreLabel);
+    scoreLabel->setText("SCORE");
+    scoreLabel->setStyleSheet(QStringLiteral("background-color:white"));
 }
 
 MainView::~MainView()
@@ -92,7 +97,10 @@ void MainView::onCardClick(){
 
     game->selectCardN(btn->getIndex());
 
+
+    //scoreLabel->setText(QString::number(game->getScore()));
     drawView();
+
 
 }
 

@@ -14,8 +14,17 @@ CardColor Card::getColor()const{
         return CardColor::Red;
     else
         return CardColor::Black;
+}
 
+Suit Card::getSuit() const
+{
+    return suit;
 
+}
+
+Face Card::getFace() const
+{
+    return face;
 }
 
 void Card::flip()
@@ -30,8 +39,19 @@ void Card::setMatched(bool matched)
     _matched = matched;
 }
 
+int Card::getMatchValue(Card otherCard)
+{
+    if(face == otherCard.getFace()){
+        return 4;
+    }
+    else if(suit == otherCard.getSuit()){
+        return 2;
+    }
+    else{
+        return -2;
+    }
 
-
+}
 
 std::string Card::toString() const
 {
