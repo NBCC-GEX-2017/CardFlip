@@ -18,18 +18,33 @@
 enum class Suit {CLUB, DIAMOND, HEART, SPADE};
 enum class Face {ACE, TWO, THREE, FOUR, FIVE, SIX, SEVEN, EIGHT, NINE, TEN, JACK, QUEEN, KING};
 
-struct Card
+enum class CardColor {Black, Red};
+
+class Card
 {
-    Card(Face f, Suit s) : suit(s), face(f) {}
+public:
+    Card(Face f, Suit s) : suit(s), face(f), _matched(false), _flipped(false){}
+    std::string toString() const;
+
+    bool isMathced() const{return _matched;}
+    bool isFlipped() const{return _flipped;}
+    CardColor getColor() const;
+
+    void flip();
+    void setMatched(bool matched);
     const Suit suit;
     const Face face;
-    
-    std::string toString() const;
-    
+
+private:
+    bool _matched;
+    bool _flipped;
+
+public:
     // class members ///////////////////////////////////
     static const std::set<Suit> suits;
     static const std::set<Face> faces;
-    
+
+private:
     static const std::map<Face, std::string>  faceNames;
     static const std::map<Suit, std::string>  suitNames;
     ////////////////////////////////////////////////////
@@ -50,6 +65,8 @@ inline bool operator!=(const Card& lhs, const Card& rhs){return !operator==(lhs,
 inline bool operator> (const Card& lhs, const Card& rhs){return  operator< (rhs,lhs);}
 inline bool operator<=(const Card& lhs, const Card& rhs){return !operator> (lhs,rhs);}
 inline bool operator>=(const Card& lhs, const Card& rhs){return !operator< (lhs,rhs);}
+
+
 
 std::ostream& operator<<(std::ostream& os, Card& c);
 

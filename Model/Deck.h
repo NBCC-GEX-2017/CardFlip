@@ -11,29 +11,31 @@
 
 #include <vector>
 #include <memory>
+#include <cstdlib>
+#include <ctime>
+
 
 // forward declaration
-struct Card;
+class Card;
 using CardPtr = std::shared_ptr<Card>;
 
-enum class CardColor {Black, Red};
+//enum class CardColor {Black, Red};
 class Deck
 {
 public:
     Deck();
     
-    CardColor getCardColor();
+
     bool isEmpty() const;
-    void nextCard();
-    std::string topCardToString() const;
+
     void shuffle();
-    void sort();
-    bool isFlipped() const {return _isFlipped;}
+
+    CardPtr drawcard();
     
 private:
     std::vector<CardPtr> _deck;
     int _topOfDeck;
-    bool _isFlipped;
+
 };
 
 

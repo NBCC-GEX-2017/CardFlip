@@ -27,12 +27,15 @@ SOURCES += \
         main.cpp \
         control\mainview.cpp \
     Model/Card.cpp \
-    Model/Deck.cpp
+    Model/Deck.cpp \
+    Model/matchinggame.cpp
 
 HEADERS += \
         Control\mainview.h \
     Model/Card.h \
-    Model/Deck.h
+    Model/Deck.h \
+    View/cardqpushbutton.h \
+    Model/matchinggame.h
 
 FORMS += \
         View\mainview.ui

@@ -5,7 +5,14 @@
 #include <QHBoxLayout>
 #include <QString>
 #include <QFont>
+#include <QGridLayout>
+#include "View/cardqpushbutton.h"
+#include "Model/matchinggame.h"
+#include "Model/Deck.h"
 
+
+const int Card_Rows=4;
+const int Card_Cols=8;
 
 MainView::MainView(QWidget *parent) :
     QMainWindow(parent),
@@ -17,27 +24,21 @@ MainView::MainView(QWidget *parent) :
     deck=std::unique_ptr<Deck>(new Deck());
     deck->shuffle();
 
-    /*//set up model: Deck deck; deck.shuffle
 
+    game=std::unique_ptr<MatchingGame>(new MatchingGame(Card_Cols*Card_Rows, *deck));
 
-    //set up layouts
-    //central widget->vlMain->hlCard
-    //                      ->hlShuffle*/
 
     QVBoxLayout* vlMain=new QVBoxLayout(ui->centralWidget);
-    QHBoxLayout* hlCard=new QHBoxLayout();
-    vlMain->addLayout(hlCard);
+    QGridLayout* glcard=new QGridLayout();
+    vlMain->addLayout(glcard);
+
 
     QHBoxLayout* hlShuffle=new QHBoxLayout();
     vlMain->addLayout(hlShuffle);
 
-        //vlmain->addSpacing(100);
-
-        auto hl_space_demo = new QHBoxLayout();
-        vlMain->addLayout(hl_space_demo);
 
 
-        vlMain->addStretch(1);
+    vlMain->addStretch(1);
 
     ui->centralWidget->setStyleSheet(QStringLiteral("background-color:rgb(23,101,17)"));
 
@@ -47,22 +48,30 @@ MainView::MainView(QWidget *parent) :
     font.setPixelSize(40);
 
 
-    cardDisplayBtn = new QPushButton;
-    cardDisplayBtn->setFont(font);
-    cardDisplayBtn->setMinimumSize(QSize(128,192));
-    cardDisplayBtn->setMaximumSize(QSize(128,192));
-    cardDisplayBtn->setText("");
-    cardDisplayBtn->setStyleSheet("border-image:url(:/new/prefix1/Media/cardback.png)");
 
 
-    hlCard->addWidget(cardDisplayBtn);
-        hlCard->addStretch(1);
+        for(int i=0;i<Card_Cols*Card_Rows;i++){
+            CardQPushButton* btn = new CardQPushButton(i);
 
-    connect(cardDisplayBtn,
-            &QPushButton::clicked,
-            this,
-            &MainView::onCardClick);
 
+            btn->setFont(font);
+            btn->setMinimumSize(QSize(128,172));
+            btn->setMaximumSize(QSize(128,172));
+            btn->setText("");
+            btn->setStyleSheet("border-image:url(:/new/prefix1/Media/cardback.png)");
+
+            glcard->addWidget(btn, i/Card_Cols,i%Card_Cols);
+            cardButtons.push_back(btn);
+
+
+
+            connect(btn,
+                    &CardQPushButton::clicked,
+                    this,
+                    &MainView::onCardClick);
+
+
+        }
 
     //set up ShuffleButton
 
@@ -73,41 +82,18 @@ MainView::MainView(QWidget *parent) :
     shuffle->setStyleSheet(QStringLiteral("background-color:lightsteelblue"));
 
 
-        hlShuffle->addStretch(1);
+    hlShuffle->addStretch(1);
     hlShuffle->addWidget(shuffle);
 
     connect(shuffle,
             &QPushButton::clicked,
             this,
-            [this](){deck->shuffle();drawView();});
+            [this](){deck->shuffle();
+                    game=std::unique_ptr<MatchingGame>(new MatchingGame(Card_Cols*Card_Rows, *deck));
+                    drawView();});
 
 
-       /* // add some more buttons
-            for (int i=0;i<5;++i)
-            {
-                auto btn = new QPushButton();
-                btn->setText("X");
-                btn->setMinimumSize(QSize(20,20));
-                btn->setMaximumSize(QSize(20,20));
-                btn->setStyleSheet(QStringLiteral("background-color:plum"));
-                hl_space_demo->addWidget(btn);
-            }
 
-            hl_space_demo->addStretch(1);
-
-            // add some more buttons
-            for (int i=0;i<5;++i)
-            {
-                auto btn = new QPushButton();
-                btn->setText("X");
-                btn->setMinimumSize(QSize(20,20));
-                btn->setMaximumSize(QSize(20,20));
-                btn->setStyleSheet(QStringLiteral("background-color:plum"));
-                hl_space_demo->addWidget(btn);
-                hl_space_demo->addSpacing(20);
-            }
-
-            //hl_space_demo->addStrut(200);*/
 }
 
 MainView::~MainView()
@@ -118,7 +104,10 @@ MainView::~MainView()
 
 void MainView::onCardClick()
 {
-    deck->nextCard();//for HW://deck->nextCard();
+    auto fromButton=sender();
+    CardQPushButton* fromCardButton=dynamic_cast<CardQPushButton*>(fromButton);
+    game->selectCard(fromCardButton->getIndex());
+
     drawView();
 
 
@@ -127,21 +116,36 @@ void MainView::onCardClick()
 void MainView::drawView()
 {
 
+    for(auto& c : cardButtons){
 
-    if(deck->isFlipped())
-    {
-        if(deck->getCardColor()==CardColor::Red)
-            cardDisplayBtn->setStyleSheet("border-image:url(:/new/prefix1/Media/cardfront.png); color:red");
+
+        CardPtr card=game->getCard(c->getIndex());
+
+        if(card->isMathced())
+        {
+            c->setText(QString::fromStdString(card->toString()));
+            if(card->getColor()==CardColor::Red)
+                c->setStyleSheet("border-image:url(:/new/prefix1/Media/cardfrontGray.png); color:red");
+            else
+                c->setStyleSheet("border-image:url(:/new/prefix1/Media/cardfrontGray.png); color:black");
+        }
         else
-            cardDisplayBtn->setStyleSheet("border-image:url(:/new/prefix1/Media/cardfront.png); color:black");
+        {
+            if(card->isFlipped())
+            {
+                c->setText(QString::fromStdString(card->toString()));
+                if(card->getColor()==CardColor::Red)
+                    c->setStyleSheet("border-image:url(:/new/prefix1/Media/cardfront.png); color:red");
+                else
+                    c->setStyleSheet("border-image:url(:/new/prefix1/Media/cardfront.png); color:black");
+            }
+            else
+            {
+                c->setText("");
+                c->setStyleSheet("border-image:url(:/new/prefix1/Media/cardback.png)");
 
-        cardDisplayBtn->setText(QString::fromStdString(deck->topCardToString()));
-
-    }
-    else
-    {
-        cardDisplayBtn->setStyleSheet("border-image:url(:/new/prefix1/Media/cardback.png)");
-        cardDisplayBtn->setText("");
+            }
+        }
     }
 
 }

@@ -4,13 +4,15 @@
 #include <QMainWindow>
 #include "Model/Deck.h"
 #include <memory>
+#include <vector>
 
+class MatchingGame;
 
 namespace Ui {
 class MainView;
 }
 
-class QPushButton;
+class CardQPushButton;
 
 class MainView : public QMainWindow
 {
@@ -30,7 +32,9 @@ private:
     Ui::MainView *ui;
 
     std::unique_ptr<Deck> deck;
-    QPushButton* cardDisplayBtn;//change to vector,deal 32 cards
+    std::unique_ptr<MatchingGame> game;
+
+    std::vector<CardQPushButton*> cardButtons;
 
 };
 
