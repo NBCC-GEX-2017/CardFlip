@@ -9,7 +9,7 @@
 #include "View/cardqpushbutton.h"
 #include "Model/matchinggame.h"
 #include "Model/Deck.h"
-
+#include <QLabel>
 
 const int Card_Rows=4;
 const int Card_Cols=8;
@@ -36,6 +36,9 @@ MainView::MainView(QWidget *parent) :
     QHBoxLayout* hlShuffle=new QHBoxLayout();
     vlMain->addLayout(hlShuffle);
 
+    //score
+    QHBoxLayout* hlScore=new QHBoxLayout();
+    vlMain->addLayout(hlScore);
 
 
     vlMain->addStretch(1);
@@ -92,7 +95,14 @@ MainView::MainView(QWidget *parent) :
                     game=std::unique_ptr<MatchingGame>(new MatchingGame(Card_Cols*Card_Rows, *deck));
                     drawView();});
 
-
+    //set up score label
+    /*QLabel* */score=new QLabel;
+    score->setText("Score");
+    score->setMinimumSize(QSize(128,20));
+    score->setMaximumSize(QSize(128,20));
+    score->setStyleSheet(QStringLiteral("background-color:lightsteelblue"));
+    hlScore->addStretch(1);
+    hlScore->addWidget(score);
 
 }
 
@@ -148,6 +158,7 @@ void MainView::drawView()
         }
     }
 
+    score->setNum(game->getScore());
 }
 
 

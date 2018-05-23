@@ -5,6 +5,7 @@
 #include "Model/Deck.h"
 #include <memory>
 #include <vector>
+#include <QLabel>
 
 class MatchingGame;
 
@@ -13,6 +14,7 @@ class MainView;
 }
 
 class CardQPushButton;
+//class QLabel;
 
 class MainView : public QMainWindow
 {
@@ -36,6 +38,7 @@ private:
 
     std::vector<CardQPushButton*> cardButtons;
 
+    QLabel* score;//=new QLabel;
 };
 
 #endif // MAINVIEW_H

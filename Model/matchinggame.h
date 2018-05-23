@@ -12,8 +12,11 @@ public:
     CardPtr getCard(int index);
     void    selectCard(int index);
 
+    int     getScore();
 private:
     std::vector<CardPtr> cards;
+
+    int score;
 };
 
 #endif // MATCHINGGAME_H

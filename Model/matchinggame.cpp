@@ -2,7 +2,7 @@
 #include <algorithm>
 
 
-MatchingGame::MatchingGame(int numberOfCards, Deck &deck)
+MatchingGame::MatchingGame(int numberOfCards, Deck &deck) : score(0)
 {
     cards.reserve(numberOfCards);
 
@@ -37,11 +37,16 @@ void MatchingGame::selectCard(int index)
                 c->setMatched(true);
                 cards.at(index)->setMatched(true);
                 //score point
+                if(c->suit == cards.at(index)->suit)score+=1;
+                else score+=4;
             }
             else{
-                if(!c->isMathced())
+                if(!c->isMathced()){
                     c->flip();
                     //deduct point
+                    score-=1;
+                }
+
             }
         }
 
@@ -50,6 +55,9 @@ void MatchingGame::selectCard(int index)
 
     if(index<cards.size())
     {
+        //deduct point
+        if(cards.at(index)->isFlipped())score-=1;
+
         cards[index]->flip();
     }
 
@@ -66,4 +74,9 @@ void MatchingGame::selectCard(int index)
 
 
 
+}
+
+int MatchingGame::getScore()
+{
+    return score;
 }
