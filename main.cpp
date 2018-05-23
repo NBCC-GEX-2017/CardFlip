@@ -1,6 +1,8 @@
 #include "Controller/mainview.h"
 #include <QApplication>
 
+// dgb
+
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
