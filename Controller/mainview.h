@@ -6,6 +6,7 @@
 #include <vector>
 
 
+class QLabel;
 class MatchingGame;
 class Deck;
 
@@ -33,6 +34,7 @@ private:
 private:
     Ui::MainView *ui;
 
+    QLabel* gameScore;
     std::unique_ptr<Deck> deck;
     std::unique_ptr<MatchingGame> game;
 

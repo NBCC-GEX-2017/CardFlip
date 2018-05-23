@@ -9,6 +9,7 @@
 #include "View/cardqpushbutton.h"
 #include "Model/matchinggame.h"
 #include "Model/Deck.h"
+#include <QLabel>
 #include <QDebug>
 
 
@@ -82,6 +83,10 @@ MainView::MainView(QWidget *parent) :
         game = std::unique_ptr<MatchingGame>(new MatchingGame(CARD_ROWS * CARD_COLS, *deck));
         drawView();
     });
+
+    gameScore = new QLabel();
+    gameScore->setText("0");
+    hlshuffle->addWidget(gameScore);
 }
 
 MainView::~MainView()
@@ -129,6 +134,7 @@ void MainView::drawView()
         }
         }
     }
+    gameScore->setText(QString::number(game->getScore()));
 }
 
 

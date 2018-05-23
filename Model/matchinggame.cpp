@@ -2,7 +2,7 @@
 #include <algorithm>
 
 
-MatchingGame::MatchingGame(int numberOfCards, Deck &deck)
+MatchingGame::MatchingGame(int numberOfCards, Deck &deck): score(0)
 {
     cards.reserve(numberOfCards);
 
@@ -30,6 +30,7 @@ void MatchingGame::selectCardN(int index)
         {
             //flip back and return
             cards[index]->flip();
+            score = score - 1;
             return;//breaks out of ifs
         }
         else if(cards[index]->isMatched())//if isMatched then return
@@ -55,9 +56,17 @@ void MatchingGame::selectCardN(int index)
                 (*it)->setMatched(true);
                 //score some points
                 cards[index]->flip();
+                if((*it)->face == cards[index]->face)//if it was face matched
+                {
+                    score = score + 4;
+                }
+                else{
+                    score = score + 1;
+                }
             }
             else//if it doesn't match
             {
+                 score = score - 1;
                  //deduct points
             }
         }
