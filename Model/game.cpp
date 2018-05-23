@@ -22,10 +22,36 @@ void Game::selectCardI(int index)
 //    {
 //        cards[index]->flip();
 //    }
-    if(index < cards.size())
-    {
-    cards[index]->flip();
-    }
+
+    // card(index)
+        // isFlipped() -> flip and return
+        // isMatched() -> return
+
+    // is there is a card already flipped
+        // no -> flip it
+
+        // yes
+            // does it match card at index
+                // yes
+                    // set both to matched
+                    // score some points
+                // no
+                    // deduct some points
+                    // flip both cards
+
+    std::vector<CardPtr> card = std::find_if(cards.begin(),
+                                             cards.end(),
+                                             [](CardPtr c) { return c->isFlipped();});
+
+
+
+
+
+
+//    if(index < cards.size())
+//    {
+//    cards[index]->flip();
+//    }
 }
 
 CardPtr Game::getCardI(int index)
