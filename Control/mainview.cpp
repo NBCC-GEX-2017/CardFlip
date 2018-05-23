@@ -9,6 +9,7 @@
 #include <QGridLayout>
 #include <QString>
 #include <QFont>
+#include <QLabel>
 
 const int CARD_ROWS = 4;
 const int CARD_COLS = 8;
@@ -27,10 +28,11 @@ MainView::MainView(QWidget *parent) :
     // set up layouts
     //  central widget -> vlMain -> hlCard
     //                           -> hlShuffle
-    //auto vlMain = new QVBoxLayout(ui->centralWidget);
-    //auto hlCard = new QHBoxLayout();
-    //vlMain->addLayout(hlCard);
-    auto* grid = new QGridLayout(ui->centralWidget);
+    auto vlMain = new QVBoxLayout(ui->centralWidget);
+    auto hlCard = new QHBoxLayout();
+    vlMain->addLayout(hlCard);
+    auto* grid = new QGridLayout();
+    vlMain->addLayout(grid);
     //auto hlShuffle = new QHBoxLayout();
     //vlMain->addLayout(hlShuffle);
 
@@ -67,15 +69,32 @@ MainView::MainView(QWidget *parent) :
     shuffleButton->setStyleSheet(QStringLiteral("border-color:aliceblue"));
     shuffleButton->setStyleSheet("background-color: white;");
 
-    grid->addWidget(shuffleButton, 4, 7);
+    vlMain->addWidget(shuffleButton);
 
     connect(shuffleButton,
             &QPushButton::clicked,
             this,
             [this](){
         deck->shuffle();
-        //game = std::unique_ptr<Game>(new Game(CARD_ROWS))
+        game = std::unique_ptr<Game>(new Game(CARD_ROWS * CARD_COLS, *deck));
         drawView();});
+
+    QFont font;
+    font.setPixelSize(20);
+    font.setBold(true);
+
+
+    score = new QLabel();
+    score->setText("Score: " + QString::number(game->getScore()));
+    score->setFont(font);
+    score->setMinimumSize(QSize(200,200));
+    score->setMaximumSize(QSize(200,200));
+    score->setMinimumHeight(30);
+    score->setMinimumWidth(30);
+
+    vlMain->addWidget(score);
+
+
 
 }
 
@@ -119,4 +138,6 @@ void MainView::drawView()
             c->setStyleSheet("border-image:url(:/media/Media/cardback.png);");
         }
     }
+
+    score->setText("Score: " + QString::number(game->getScore()));
 }

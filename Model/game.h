@@ -12,6 +12,7 @@ public:
 
     CardPtr getCardI(int index);
     void selectCardI(int index);
+    int getScore() const { return score; }
 
 private:
     std::vector<CardPtr> cards;

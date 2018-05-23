@@ -1,7 +1,7 @@
 #include "game.h"
 #include <algorithm>
 
-Game::Game(int numberOfCards, Deck& deck) : score(0)
+Game::Game(int numberOfCards, Deck& deck) : score(250)
 {
     cards.reserve(numberOfCards);
 
@@ -30,6 +30,7 @@ void Game::selectCardI(int index)
                     // flip both cards
 
     auto newCard = cards.at(index);
+    score -=1;
 
     if (newCard->isMatched())
         return;
@@ -50,12 +51,35 @@ void Game::selectCardI(int index)
     else
     {
         auto cardSelected = *card;
-        if (cardSelected->suit == newCard->suit || cardSelected->face == newCard->face)
+//        if (cardSelected->suit == newCard->suit && !cardSelected->isMatched()
+//                || cardSelected->face == newCard->face && !cardSelected->isMatched())
+//        {
+//            cardSelected->setMatched(true);
+//            cardSelected->flip(false);
+//            newCard->setMatched(true);
+//            newCard->flip(false);
+//        }
+//        else
+//        {
+//            cardSelected->flip(false);
+//            newCard->flip(true);
+//        }
+
+        if (cardSelected->suit == newCard->suit && !cardSelected->isMatched())
         {
             cardSelected->setMatched(true);
             cardSelected->flip(false);
             newCard->setMatched(true);
             newCard->flip(false);
+            score += 10;
+        }
+        else if (cardSelected->face == newCard->face && !cardSelected->isMatched())
+        {
+            cardSelected->setMatched(true);
+            cardSelected->flip(false);
+            newCard->setMatched(true);
+            newCard->flip(false);
+            score += 25;
         }
         else
         {

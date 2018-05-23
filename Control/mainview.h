@@ -4,6 +4,7 @@
 #include <QMainWindow>
 #include <memory>
 #include <vector>
+#include <QLabel>
 #include "Model/Deck.h"
 #include "Model/game.h"
 
@@ -32,6 +33,7 @@ private:
     std::unique_ptr<Deck> deck;
     std::unique_ptr<Game> game;
     std::vector<CardButton*> cardButtons;
+    QLabel* score;
 
 };
 
