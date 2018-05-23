@@ -58,13 +58,14 @@ MainView::MainView(QWidget *parent) :
     auto vlmain= new QVBoxLayout(ui->centralWidget);
 
     auto* grid = new QGridLayout();
-    auto hlShuffle = new QHBoxLayout();
+    auto hlLblBtn = new QHBoxLayout();
 
     vlmain->addLayout(grid);
-    vlmain->addLayout(hlShuffle);
+    vlmain->addLayout(hlLblBtn);
 
     ui->centralWidget->setStyleSheet(QStringLiteral("background-color:rgb(23,101,17)"));
 
+    //set up cards
     for(int i=0;i<ROWS*COLUMNS;i++){
 
         QFont font;
@@ -89,6 +90,19 @@ MainView::MainView(QWidget *parent) :
 
     }
 
+    //set up score label
+    scoreLabel= new QLabel();
+
+    QFont font("Comic Sans MS", 14, QFont::Bold);
+
+    scoreLabel->setText("Score: " +QString::number(game->getScore()));
+    scoreLabel->setMinimumSize(QSize(128,20));
+    scoreLabel->setMaximumSize(QSize(128,20));
+    scoreLabel->setFont(font);
+    hlLblBtn->addWidget(scoreLabel);
+
+
+
     // set up shuffle button
     auto newShuffleBtn= new QPushButton();
 
@@ -98,14 +112,17 @@ MainView::MainView(QWidget *parent) :
     newShuffleBtn->setMaximumSize(QSize(128,20));
 
 
-    hlShuffle->addStretch(1);
+    hlLblBtn->addStretch(1);
 
-    hlShuffle->addWidget(newShuffleBtn);
+    hlLblBtn->addWidget(newShuffleBtn);
 
     connect(newShuffleBtn,
             &QPushButton::clicked,
             this,
             [this](){delete (game); game = new Game(ROWS*COLUMNS); drawView();});
+
+
+
 
 
 }
@@ -161,6 +178,8 @@ void MainView::drawView()
         }
 
     }
+
+    scoreLabel->setText("Score: " +QString::number(game->getScore()));
 
 
 }

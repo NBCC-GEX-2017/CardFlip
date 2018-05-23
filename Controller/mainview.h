@@ -5,6 +5,7 @@
 #include "Model/Deck.h"
 #include <memory>
 #include <QPushButton>
+#include <QLabel>
 #include <Model/game.h>
 
 
@@ -35,6 +36,7 @@ private:
     Ui::MainView *ui;
     std::unique_ptr<Deck> deck;
     QPushButton* cardDisplayBtn;
+    QLabel* scoreLabel;
     Game* game;
     //std::vector<QPushButton*> cardDisplayBtns;
     std::vector<CardQPushButton*> cardDisplayBtns;
