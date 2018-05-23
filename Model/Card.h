@@ -24,12 +24,12 @@ class Card
 {
 public: //
 
-    Card(Face f, Suit s) : suit(s), face(f), _matched(false), _flipped(false) {}
+    Card(Face f, Suit s) : suit(s), face(f), _matched(false), _selected(false) {}
     std::string toString() const;
 
     CardColor getColor() const;
     bool isMatched() const {return _matched;} //
-    bool isFlipped() const {return _flipped;} //
+    bool isSelected() const {return _selected;} //
 
     void flip();                              //
     void setMatched(bool matched);                        //
@@ -45,7 +45,7 @@ public: //
 
 private:    //
     bool _matched;  //
-    bool _flipped;  //
+    bool _selected;  //
 
 
     static const std::map<Face, std::string>  faceNames;

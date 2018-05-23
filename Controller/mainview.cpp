@@ -1,11 +1,11 @@
 #include "mainview.h"
 #include "ui_mainview.h"
 #include <QPushbutton>
-#include <QVboxLayout>
-#include <QHboxLayout>
 #include <QString>
 #include <QFont>
+#include <QVBoxLayout>
 #include <QGridLayout>
+#include <QPalette>
 #include "View/cardqpushbutton.h"
 
 const int CARD_COLS = 8;
@@ -18,27 +18,31 @@ MainView::MainView(QWidget *parent) :
 {
     ui->setupUi(this);
 
-//    matchingGame = new MatchingGame();
-
     deck = std::unique_ptr<Deck>(new Deck());  //
     deck->shuffle();                           //
 
     matchingGame = std::unique_ptr<MatchingGame>(new MatchingGame(CARD_ROWS * CARD_COLS, *deck));
 
-    auto* grid = new QGridLayout(ui->centralWidget);
+    auto* vlMain = new QVBoxLayout(ui->centralWidget);
+    auto* cardGrid = new QGridLayout();
+    vlMain->addLayout(cardGrid);
+    vlMain->addSpacing(15);
+
     QFont font;
-    font.setPixelSize(40);
+    font.setPixelSize(50);
+    font.setBold(true);
+
+
 
     for(int i=0;i<(CARD_COLS * CARD_ROWS);i++){
         auto buttons = new CardQPushButton(i);
-        //QPushButton* buttons = new QPushButton;
         buttons->setFont(font);
-        buttons->setMaximumSize(QSize(QSize(128,192)));
-        buttons->setMinimumSize(QSize(QSize(128,192)));
+        buttons->setMaximumSize(QSize(QSize(192,288)));
+        buttons->setMinimumSize(QSize(QSize(192,288)));
         buttons->setText("");
         buttons->setStyleSheet("border-image:url(:/media/Media/cardback.png)");
 
-        grid->addWidget(buttons, i/CARD_COLS, i%CARD_COLS);
+        cardGrid->addWidget(buttons, i/CARD_COLS, i%CARD_COLS);
         btn.push_back(buttons);
 
         connect(buttons,
@@ -48,20 +52,34 @@ MainView::MainView(QWidget *parent) :
 
     }
 
-    auto shuffleButton = new QPushButton();
-    shuffleButton->setText("Shuffle");
-    shuffleButton->setMinimumSize(QSize(128,20));
-    shuffleButton->setMaximumSize(QSize(128,20));
-    shuffleButton->setStyleSheet(QStringLiteral("background-color:aliceblue"));
-    grid->addWidget(shuffleButton);
+    QFont font1;
+    font1.setPixelSize(30);
+    font1.setBold(true);
 
+    auto* btnGrid = new QGridLayout();
+    vlMain->addLayout(btnGrid);
 
-    connect(shuffleButton,
+    auto newGameButton = new QPushButton();
+    newGameButton->setText("New Game");
+    newGameButton->setFont(font1);
+    newGameButton->setMinimumSize(QSize(192,80));
+    newGameButton->setMaximumSize(QSize(192,80));
+    newGameButton->setStyleSheet(QStringLiteral("background-color:aliceblue"));
+    btnGrid->addWidget(newGameButton, 0, 1);
+
+    connect(newGameButton,
             &QPushButton::clicked,
             this,
-            [this](){deck->shuffle();drawView();});
+            [this](){
+            deck->shuffle();
+            matchingGame = std::unique_ptr<MatchingGame>(new MatchingGame(CARD_ROWS * CARD_COLS, *deck));
+            drawView();});
 
 
+    _displayCount = new QLabel;
+    _displayCount->setText(QStringLiteral("Your Point: %1").arg(matchingGame->getScore()));
+    _displayCount->setFont(font1);
+    btnGrid->addWidget(_displayCount, 0, 0);
 }
 
 
@@ -92,7 +110,7 @@ void MainView::drawView() {
             }
 
         }else{
-            if(card->isFlipped()){
+            if(card->isSelected()){
                 if(card->getColor() == CardColor::Red ){
                     c->setStyleSheet("border-image:url(:/media/Media/cardfront.png); color:red;");
                 }else {
@@ -106,6 +124,5 @@ void MainView::drawView() {
         }
     }
 
-
-
+    _displayCount->setText(QStringLiteral("Your Point: %1").arg(matchingGame->getScore()));
 }

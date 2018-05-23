@@ -56,7 +56,7 @@ void Deck::shuffle()
     std::for_each(_deck.begin(),                //
                   _deck.end(),                  //
                   [](CardPtr e)                 //
-                 { if(e->isFlipped()){          //
+                 { if(e->isSelected()){          //
                         e->flip();              //
                     } e->setMatched(false);}    //
     );
@@ -64,6 +64,6 @@ void Deck::shuffle()
     {
         swap(_deck[i],  _deck[i + (rand() % (_deck.size()-i))]);
     }
-    _topOfDeck = _deck.size()-1;
+    _topOfDeck = (int)_deck.size()-1;
 
 }

@@ -7,6 +7,7 @@
 #include <memory>         //
 #include <vector>         //
 #include "Model/matchinggame.h" //
+#include <QLabel>
 
 namespace Ui {
 class MainView;
@@ -33,6 +34,7 @@ private:  //
 
 private:
     Ui::MainView *ui;
+    QLabel* _displayCount;
 
     std::unique_ptr<Deck> deck;
     std::unique_ptr<MatchingGame> matchingGame;

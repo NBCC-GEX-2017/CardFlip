@@ -4,6 +4,8 @@
 #include "Model/Deck.h"
 #include "View/cardqpushbutton.h"
 #include <vector>
+#include <map>
+#include <algorithm>
 
 class MatchingGame
 {
@@ -12,13 +14,17 @@ public:
 
     CardPtr getSquareN(int i);          //
     void selectCardN(int index);         //
-    Suit getSuit(int i){return cards[i]->suit;}  //
-    Face getFace(int i){return cards[i]->face;}  //
+    Suit getSuit(int i){return _cards[i]->suit;}  //
+    Face getFace(int i){return _cards[i]->face;}  //
+    int getScore();
+
 
 
 private:
-    std::vector<CardPtr> cards;
+    std::vector<CardPtr> _cards;
+    std::map<CardPtr, int> _count;
 
+    int _score;
 };
 
 #endif // MATCHINGGAME_H

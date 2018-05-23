@@ -24,7 +24,7 @@ CardColor Card::getColor() const
 
 void Card::flip()
 {
-    _flipped = _flipped ? false : true;
+    _selected = _selected ? false : true;
 }
 
 void Card::setMatched(bool matched)
