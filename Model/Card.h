@@ -31,6 +31,9 @@ public:
     void flip();
     void setMatched(bool matched);
 
+    const Face getFace()const{return face;}
+    const Suit getSuit() const {return suit;}
+
     const Suit suit;
     const Face face;
 

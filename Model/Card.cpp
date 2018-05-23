@@ -10,7 +10,7 @@
 
 std::string Card::toString() const
 {
-    return  faceNames.at(face) +   suitNames.at(suit);
+    return  faceNames.at(face) +  suitNames.at(suit);
 }
 
 CardColor Card::getColor() const

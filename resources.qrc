@@ -2,6 +2,7 @@
     <qresource prefix="/media">
         <file>Media/cardback.png</file>
         <file>Media/cardfront.png</file>
+        <file>Media/cardfrontGray.png</file>
     </qresource>
     <qresource prefix="/">
         <file>media.qrc</file>

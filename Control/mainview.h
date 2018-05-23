@@ -6,6 +6,7 @@
 #include <memory>
 #include <QPushButton>
 #include "Model/matchinggame.h"
+#include <QLabel>
 
 namespace Ui {
 class MainView;
@@ -32,6 +33,7 @@ private:
     std::unique_ptr<Deck> deck;
     std::vector<CardQPushButton*> cardDisplayBtns;
     MatchingGame *game;
+    QLabel* score;
 
 };
 

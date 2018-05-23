@@ -26,6 +26,7 @@ public:
     bool isEmpty() const;
     CardPtr drawCard();
     void shuffle();
+    //int rando() {return rand() % _deck.size();}
     
 private:
     std::vector<CardPtr> _deck;
