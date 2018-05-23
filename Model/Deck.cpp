@@ -20,8 +20,9 @@ Deck::Deck()
         for (auto s : Card::suits)
             _deck.push_back(std::make_shared<Card>(Card(f,s)));
     
-    _topOfDeck = _deck.size() - 1;
+    _topOfDeck = _deck.size()-1;
 }
+
 
 bool Deck::isEmpty() const
 {
@@ -35,7 +36,6 @@ CardPtr Deck::drawCard()
     else
         return _deck[_topOfDeck--];
 }
-
 
 void Deck::shuffle()
 {
@@ -53,5 +53,5 @@ void Deck::shuffle()
     {
         swap(_deck[i],  _deck[i + (rand() % (_deck.size()-i))]);
     }
-    _topOfDeck =  _deck.size()-1;
+    _topOfDeck = static_cast<int>(_deck.size()-1);
 }

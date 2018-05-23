@@ -16,7 +16,6 @@
 class Card;
 using CardPtr = std::shared_ptr<Card>;
 
-
 class Deck
 {
 public:
@@ -24,13 +23,11 @@ public:
     
     bool isEmpty() const;
     CardPtr drawCard();
-
     void shuffle();
-
+    
 private:
     std::vector<CardPtr> _deck;
     int _topOfDeck;
-
 };
 
 
