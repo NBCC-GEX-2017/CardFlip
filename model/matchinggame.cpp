@@ -50,6 +50,7 @@ void MatchingGame::flipCardAt(int i)
         {
             card->get()->flip();
             cards[i]->flip();
+            score--;
 
         }
     }
