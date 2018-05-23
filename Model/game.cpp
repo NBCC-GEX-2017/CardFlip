@@ -41,27 +41,41 @@ CardPtr Game::getCardN(int index)
 void Game::selectCardN(int index)
 {
 
-
+_cards.at(index)->setMatched(false); ///
     if (index < _cards.size() )
     {
+
+
+
         _cards.at(index)->flip(); //flip
+
         for (int i=0;i<_cards.size();++i)
         {
-            if (_cards.at(i)->isFlipped() && i != index){  //if already flipped, flip it back
 
-                if(_cards.at(index)->getMatchValue(*_cards.at(i)) > 0){
 
-                    _cards.at(index)->setMatched(true);
+            if (_cards.at(i)->isFlipped() && i != index && !_cards.at(i)->isMatched()){ //flip back the last card that was flipped
+
+                /////
+                if(_cards.at(index)->getMatchValue(*_cards.at(i)) > 0){  // find out if two cards match
+
+                    _cards.at(index)->setMatched(true); // set both matched value to true if they match
                     _cards.at(i)->setMatched(true);
 
                 }
                 else{
-                    _cards.at(i)->flip();
+
+                    _cards.at(i)->flip(); //if already flipped, and no match, flip it back
                 }
                 score += _cards.at(index)->getMatchValue(*_cards.at(i));
+
             }
+
+
         }
+
     }
+
+
 
 
     //isMatched() -> ignore and return
