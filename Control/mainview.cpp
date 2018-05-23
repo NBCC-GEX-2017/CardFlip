@@ -26,31 +26,44 @@ MainView::MainView(QWidget *parent) :
     QFont font;
     font.setPixelSize(40);
     QFont font2;
-    font2.setPixelSize(15);
+    font2.setPixelSize(25);
     font2.setFamily("Times new Roman");
+    QFont font3;
+    font3.setPixelSize(15);
+    font3.setFamily("Times new Roman");
 
     auto* verticalLayoutMain = new QVBoxLayout(ui->centralWidget);
     auto* gridLayout = new QGridLayout();
     verticalLayoutMain->addLayout(gridLayout);
 
     //set up shuffle button
-    auto* shuffButton = new QPushButton;
-    shuffButton->setText("SHUFFLE");
-    gridLayout->addWidget(shuffButton, 4, 0);
-    shuffButton->setMaximumSize(QSize(70,20));
-    shuffButton->setMinimumSize(QSize(70,20));
-    shuffButton->setFont(font2);
+//    auto* shuffButton = new QPushButton;
+//    shuffButton->setText("SHUFFLE");
+//    gridLayout->addWidget(shuffButton, 4, 0);
+//    shuffButton->setMaximumSize(QSize(70,20));
+//    shuffButton->setMinimumSize(QSize(70,20));
+//    shuffButton->setFont(font2);
 
-    shuffButton->setStyleSheet(QStringLiteral("background-color:rgb(249, 252, 251);"));
+//    shuffButton->setStyleSheet(QStringLiteral("background-color:rgb(249, 252, 251);"));
+
+    clearGame = new QPushButton;
+    clearGame->setText("New Game");
+    gridLayout->addWidget(clearGame, 4, 0);
+    clearGame->setMaximumSize(QSize(100,20));
+    clearGame->setMinimumSize(QSize(100,20));
+    clearGame->setFont(font3);
+    clearGame->setStyleSheet(QStringLiteral("background-color:rgb(249, 252, 251);"));
+    connect(clearGame, &QPushButton::clicked, this, &MainView::onNewGameClick);
 
     score = new QLabel;
     score->setText("Score: 0");
+    score->setStyleSheet("color:rgb(249, 252, 251);");
     gridLayout->addWidget(score, 4, 1);
     score->setFont(font2);
 
-    connect(shuffButton, &QPushButton::clicked, this,
-            [this] () {deck->shuffle(); game->setScore(0); drawView(); }
-            );
+//    connect(shuffButton, &QPushButton::clicked, this,
+//            [this] () {deck->shuffle(); game->setScore(0); drawView(); }
+//            );
 
     for(int i = 0; i < 32; ++i){
         CardQPushButton* cardDisplayBtn = new CardQPushButton(i);
@@ -65,8 +78,6 @@ MainView::MainView(QWidget *parent) :
         connect(cardDisplayBtn, &CardQPushButton::clicked, this, &MainView::onCardClick);
         cardDisplayBtns.push_back(cardDisplayBtn);
     }
-
-
 }
 
 MainView::~MainView()
@@ -83,6 +94,21 @@ void MainView::onCardClick()
     game->delay(500);
     game->cardNotMatched();
     drawView();
+}
+
+void MainView::onNewGameClick()
+{
+    deck = std::unique_ptr<Deck>(new Deck());
+    deck->shuffle();
+    game = new MatchingGame();
+
+    for(int i = 0; i < 32; ++i){
+        game->insertCardAtN(deck->drawCard());
+    }
+    game->setScore(0);
+    drawView();
+
+
 }
 
 void MainView::drawView()

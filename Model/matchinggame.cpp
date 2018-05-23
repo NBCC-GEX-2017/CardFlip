@@ -18,7 +18,10 @@ void MatchingGame::setCardN(int index)
     for(int i = 0; i < cards.size(); ++i)
     {
         if(cards.at(i)->isFlipped() && !cards.at(i)->isMatched())
+        {
             numUnmatchedFlippedCards++;
+            _score--;
+        }
     }
 
     if(numUnmatchedFlippedCards == 1)
@@ -32,7 +35,7 @@ void MatchingGame::setCardN(int index)
             cards.at(i)->setMatched(true);
             cards.at(index)->setMatched(true);
             _cardNotMatched = true;
-            _score+= 2;
+            _score+= 10;
         }
 
         if(cards.at(i)->isFlipped() && i != index && cards.at(i)->getSuit() == cards.at(index)->getSuit() &&
@@ -41,7 +44,7 @@ void MatchingGame::setCardN(int index)
             cards.at(i)->setMatched(true);
             cards.at(index)->setMatched(true);
             _cardNotMatched = true;
-            _score++;
+            _score+= 5;
         }
     }
 }

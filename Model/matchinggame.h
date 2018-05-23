@@ -22,7 +22,6 @@ public:
     void setScore(int scr);
     void cardNotMatched();
 
-
     void delay(int millisecondsToWait);
 
     CardPtr getCardAtN(int n);

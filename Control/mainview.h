@@ -24,6 +24,7 @@ public:
 
 private slots:
     void onCardClick();
+    void onNewGameClick();
 
 private:
     void drawView();
@@ -33,6 +34,7 @@ private:
     std::unique_ptr<Deck> deck;
     std::vector<CardQPushButton*> cardDisplayBtns;
     MatchingGame *game;
+    QPushButton* clearGame;
     QLabel* score;
 
 };
