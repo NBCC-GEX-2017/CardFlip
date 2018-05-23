@@ -138,7 +138,19 @@ void MainView::drawView()
 {
 
      for(int y=0;y<cardButtons.size();y++) // y becasuse i said so
-     {
+     { if(flippin->isMatched(y))
+         {
+             if(flippin->getColor(y)==CardColor::RED)
+             {
+                cardButtons[y]->setStyleSheet("border-image:url(:/media/Media/cardfrontGray.png); color: red;");
+             }
+             else
+             {
+                 cardButtons[y]->setStyleSheet("border-image:url(:/media/Media/cardfrontGray.png); color: black;");
+             }
+             cardButtons[y]->setText(QString::fromStdString(flippin->getText(y)));
+         }
+         else
          if(flippin->isFlipped(y))
          {
              if(flippin->getColor(y)==CardColor::RED)
