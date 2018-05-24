@@ -3,8 +3,7 @@
 matchingGame::matchingGame(int numberOfCards, Deck &deck)
 {
     cards.reserve(numberOfCards);
-
-    for(int i=0; i < numberOfCards){
+    for(int i=0; i < numberOfCards; i++){
         if(!deck.isEmpty())
             cards.push_back(deck.drawCard());
     }
