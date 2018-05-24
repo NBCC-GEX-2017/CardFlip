@@ -14,15 +14,16 @@ MainView::MainView(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainView)
 {
+    srand(time(0));
     ui->setupUi(this);    
 
     deck = std::unique_ptr<Deck>(new Deck);
     deck->shuffle();
 
 
-    //
     game = new Game();
-    //game = std::unique_ptr Game(new )
+    //unique_ptr<Game> game;
+    //game* std::unique_ptr <Game> = (new Game);
 
     //vertical layout
     auto vlmain = new QVBoxLayout(ui->centralWidget);
@@ -68,26 +69,24 @@ MainView::MainView(QWidget *parent) :
 
     // set up shuffleButton
 
-   auto* shuffleButton = new QPushButton();
-   shuffleLayout->addWidget(shuffleButton);   
-   shuffleButton->setText("Shuffle");
-   shuffleButton->setMinimumSize(QSize(128,20));
-   shuffleButton->setMaximumSize(QSize(128,20));
-   shuffleButton->setStyleSheet(QStringLiteral("background-color:aliceblue"));
+   auto* newGameButton = new QPushButton();
+   shuffleLayout->addWidget(newGameButton);
+   newGameButton->setText("Shuffle");
+   newGameButton->setMinimumSize(QSize(128,20));
+   newGameButton->setMaximumSize(QSize(128,20));
+   newGameButton->setStyleSheet(QStringLiteral("background-color:aliceblue"));
 
-    connect(shuffleButton,
+    connect(newGameButton,
             &QPushButton::clicked,
             this,
-            [this](){
-        deck->shuffle();
-        drawView();});
+            &MainView::onNewGameClick);
 
     ///////////////////
     scoreLabel = new QLabel();
     shuffleLayout->addWidget(scoreLabel);
     scoreLabel->setMaximumWidth(100);
-    scoreLabel->setText("0");
-    scoreLabel->setStyleSheet(QStringLiteral("background-color:white"));
+    scoreLabel->setText("SCORE:  0");
+    scoreLabel->setStyleSheet(QStringLiteral("color:white"));
 
 }
 
@@ -103,10 +102,26 @@ void MainView::onCardClick(){
     game->selectCardN(btn->getIndex());
 
 
-    scoreLabel->setText(QString::number(game->getScore()));
+    scoreLabel->setText("SCORE:  " + QString::number(game->getScore()));
 
     drawView();
+}
 
+
+void MainView::onNewGameClick(){
+
+
+    deck = std::unique_ptr<Deck>(new Deck);
+    deck->shuffle();
+    game = new Game();
+
+    for (int i = 0 ; i<32;i++){
+
+        game->setCardAtN(deck->drawCard());
+    }
+
+    scoreLabel->setText("SCORE:  0");
+    drawView();
 
 }
 

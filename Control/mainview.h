@@ -28,6 +28,8 @@ public:
 private slots:
     void onCardClick();
 
+    void onNewGameClick();
+
 //methods
 private:
 
