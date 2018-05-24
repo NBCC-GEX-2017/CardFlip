@@ -5,6 +5,7 @@
 #include <QHboxLayout>
 #include <QString>
 #include <QFont>
+#include<QLabel>
 #include "View/cardqpushbutton.h"
 
 int NUM_COLM=8;
@@ -25,9 +26,17 @@ MainView::MainView(QWidget *parent) :
     //  central widget -> vlMain -> hlCard
     //                           -> hlShuffle
     auto vlmain = new QVBoxLayout(ui->centralWidget);
-
-
     auto hlcard = new QGridLayout();
+    auto scorebox = new QHBoxLayout();
+    scorepoints= new QLabel();
+
+    scorepoints->setText(QStringLiteral("Score: %1" ).arg(flippin->getScore()));
+
+
+    scorebox->addWidget(scorepoints);
+     vlmain->addLayout(scorebox);
+
+
     vlmain->addLayout(hlcard);
     for(int i=0;i<(NUM_ROWS*NUM_COLM);i++){
         auto btn=new CardQPushButton(i);
@@ -46,6 +55,7 @@ MainView::MainView(QWidget *parent) :
     }
 
     auto hlshuffle = new QHBoxLayout();
+
     vlmain->addLayout(hlshuffle);
 
     vlmain->addSpacing(100);
@@ -87,7 +97,18 @@ MainView::MainView(QWidget *parent) :
     connect(shuffleButton,
             &QPushButton::clicked,
             this,
-            [this](){deck->shuffle();drawView();});
+            [this](){
+            delete(flippin);
+            flippin=new Game;
+            deck=std::unique_ptr<Deck>(new Deck());
+            deck->shuffle();
+            for(int i=0;i< cardButtons.size();i++)
+            {
+                 flippin->setCard(deck->drawCard()); // needed to add to card buttons
+
+            }
+            drawView();});
+
 /*    // add some more buttons
     for (int i=0;i<5;++i)
     {
@@ -136,10 +157,13 @@ void MainView::onCardClick()
 }
 void MainView::drawView()
 {
-
+        scorepoints->setText(QStringLiteral("Score: %1" ).arg(flippin->getScore()));
      for(int y=0;y<cardButtons.size();y++) // y becasuse i said so
+
      { if(flippin->isMatched(y))
+
          {
+
              if(flippin->getColor(y)==CardColor::RED)
              {
                 cardButtons[y]->setStyleSheet("border-image:url(:/media/Media/cardfrontGray.png); color: red;");
@@ -169,7 +193,8 @@ void MainView::drawView()
              cardButtons[y]->setText("");
          }
      }
-    /*
+
+     /*
     if(deck->isFlipped())
     {
         if(deck->getCardColor()==CardColor::Red)

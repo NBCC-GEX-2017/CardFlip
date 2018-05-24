@@ -5,6 +5,7 @@
 #include "Model/Deck.h"
 #include <memory>
 #include<vector>
+#include<QLabel>
 namespace Ui {
 class MainView;
 }
@@ -32,6 +33,7 @@ private:
    // QPushButton* cardDisplaybtn;
      std::vector<CardQPushButton*>cardButtons;
      Game* flippin;
+     QLabel* scorepoints;
 };
 
 #endif // MAINVIEW_H
